@@ -1,0 +1,27 @@
+extends ../../layouts/default.pug
+
+
+block main 
+  .product-detail 
+    h2 #{product.title}
+    p Giá: 
+      strong #{product.price}$
+    p Giảm giá: 
+      strong #{product.discountPercent}%
+    p Còn lại: 
+      strong #{product.stock}$
+    img(src=product.thumbnail, alt=product.title style="width:200px;")
+
+    p Trạng thái 
+      if(product.status === "active")
+        span(class="badge badge-success") Hoạt động
+      else
+        span(class="badge badge-danger") Dừng hoạt động
+
+    p Vị trí:
+      b #{product.position}
+    
+    p #{product.description}
+
+  a(href=`${prefixAdmin}/products/edit/${product._id}` class="btn btn-warning" )  Chỉnh sửa 
+      

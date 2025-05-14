@@ -1,0 +1,20 @@
+mixin pagination(objPagi)
+  nav 
+    ul(class="pagination")
+      if(objPagi.currentPage === 1)
+        li(class="page-item")
+          button(class="page-link") Previous
+      else
+        li(class="page-item" btn-pagination=objPagi.currentPage - 1)
+          button(class="page-link") Previous
+
+      - for(let i = 1; i <= totalPage; i++)
+          li(class=`page-item ${i === objPagi.currentPage ? "active" : ""}`)
+            button(class="page-link" btn-pagination=i) #{i}
+     
+      if(objPagi.currentPage === totalPage)
+        li(class="page-item")
+          button(class="page-link") Next
+      else
+        li(class="page-item" btn-pagination=objPagi.currentPage + 1)
+          button(class="page-link") Next
