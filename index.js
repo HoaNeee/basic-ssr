@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const methodOverride = require("method-override");
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
@@ -14,6 +15,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser("abcxyzabc"));
 app.use(sessison({ cookie: { maxAge: 60000 } }));
 app.use(flash());
+
+//tinymce
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
 
 //config database
 const database = require("./config/database");

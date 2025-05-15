@@ -4,13 +4,18 @@ extends ../../layouts/default.pug
 block main 
   .product-detail 
     h2 #{product.title}
-    p Giá: 
-      strong #{product.price}$
-    p Giảm giá: 
-      strong #{product.discountPercent}%
-    p Còn lại: 
-      strong #{product.stock}$
-    img(src=product.thumbnail, alt=product.title style="width:200px;")
+    if(product.price)
+      p Giá: 
+        strong #{product.price}$
+    
+    if(product.discountPercentage)
+      p Giảm giá: 
+        strong #{product.discountPercentage}%
+    if(product.stock)
+      p Còn lại: 
+        strong #{product.stock}
+    if(product.thumbnail)
+      img(src=product.thumbnail, alt=product.title style="width:200px;")
 
     p Trạng thái 
       if(product.status === "active")
@@ -21,7 +26,8 @@ block main
     p Vị trí:
       b #{product.position}
     
-    p #{product.description}
+    if(product.description) 
+      p !{product.description}
 
   a(href=`${prefixAdmin}/products/edit/${product._id}` class="btn btn-warning" )  Chỉnh sửa 
       

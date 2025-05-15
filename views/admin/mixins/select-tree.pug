@@ -1,0 +1,14 @@
+mixin select-tree(records, level = 1, parent_id = "", current_id = "")
+  - for(let i = 0; i < records.length; i++) 
+      - const item = records[i]
+      - const lvString = Array(level + 1).join('-- ')
+      
+     
+      - const idRecord = String(current_id)
+      - const idItem = String(item._id)
+
+      - if(idRecord !== idItem)
+          option(value=item._id selected=(idItem === parent_id ? true : false)) #{lvString} #{item.title}
+          - if(item.childArray && item.childArray.length > 0)
+              +select-tree(item.childArray, level + 1, parent_id, current_id)
+      

@@ -5,9 +5,9 @@ include ../../mixins/select-tree.pug
 block main 
   +alert-error(3000)
   
-  h2 Tạo mới sản phẩm
+  h2 Chỉnh sửa danh mục
   form(
-    action="/admin/products/create" 
+    action=`${prefixAdmin}/products-category/edit/${record._id}?_method=PATCH` 
     method="POST" 
     enctype="multipart/form-data"
   )
@@ -19,12 +19,13 @@ block main
         name="title" 
         id="title"
         required
+        value= record.title
       )
-    .form-group 
-      label(for="product-category-id") Danh mục
-      select(name="product_category_id" class="form-control" id="product-category-id")
-        option(value="") -- Chọn danh mục --  
-        +select-tree(records)
+    .form-group
+      label(for="parent_id") Danh mục cha
+      select(name="parent_id" class="form-control")
+        option(value="") -- Chọn danh mục -- 
+        +select-tree(allRecordsCategory, 1, record.parent_id, record._id)
 
     .form-group
       label(for="desc") Mô tả
@@ -33,37 +34,7 @@ block main
         name="description" 
         id="desc"
         rows=4
-      )
-    .form-group
-      label(for="price") Giá
-      input(
-        type="number"
-        min="0"
-        class="form-control" 
-        name="price" 
-        id="price"
-        value=0
-      )
-    .form-group
-      label(for="discount") % Giảm giá
-      input(
-        type="number"
-        min="0"
-        class="form-control" 
-        name="discountPercentage" 
-        id="discount"
-        value=0
-      )
-    .form-group
-      label(for="stock") Số lượng
-      input(
-        type="number"
-        min="0"
-        class="form-control" 
-        name="stock" 
-        id="stock"
-        value=0
-      )
+      ) #{record.description}
     .form-group
       label(for="thumb") Hình ảnh
       input(
@@ -77,7 +48,7 @@ block main
       )
 
       div(class="img-container")
-        img(src="", alt="" image-preview)
+        img(src=record.thumbnail, alt="" image-preview)
         div(class="remove-image")
           span X 
       
@@ -90,14 +61,16 @@ block main
         class="form-control" 
         name="position" 
         id="pos"
+        value=record.position
       )
     
     .my-2 
       .form-check 
-        input(type="radio" name="status" id="statusActive" value="active" checked)
+        input(type="radio" name="status" id="statusActive" value="active" checked= (record.status === 'active' ? true : false))
         label(for="statusActive" class="form-check-label") Hoạt động
       .form-check 
-        input(type="radio" name="status" id="statusInactive" value="inactive" )
+        input(type="radio" name="status" id="statusInactive" value="inactive" checked= (record.status === 'active' ? false : true))
         label(for="statusInactive" class="form-check-label") Dừng hoạt động
     
-    button(class="btn btn-primary" type="submit") Tạo mới
+    button(class="btn btn-primary" type="submit") Chỉnh sửa
+  

@@ -5,9 +5,9 @@ include ../../mixins/select-tree.pug
 block main 
   +alert-error(3000)
   
-  h2 Tạo mới sản phẩm
+  h2 Tạo mới danh mục
   form(
-    action="/admin/products/create" 
+    action=`${prefixAdmin}/products-category/create` 
     method="POST" 
     enctype="multipart/form-data"
   )
@@ -20,10 +20,10 @@ block main
         id="title"
         required
       )
-    .form-group 
-      label(for="product-category-id") Danh mục
-      select(name="product_category_id" class="form-control" id="product-category-id")
-        option(value="") -- Chọn danh mục --  
+    .form-group
+      label(for="parent_id") Danh mục cha
+      select(name="parent_id" class="form-control")
+        option(value="") -- Chọn danh mục -- 
         +select-tree(records)
 
     .form-group
@@ -33,36 +33,6 @@ block main
         name="description" 
         id="desc"
         rows=4
-      )
-    .form-group
-      label(for="price") Giá
-      input(
-        type="number"
-        min="0"
-        class="form-control" 
-        name="price" 
-        id="price"
-        value=0
-      )
-    .form-group
-      label(for="discount") % Giảm giá
-      input(
-        type="number"
-        min="0"
-        class="form-control" 
-        name="discountPercentage" 
-        id="discount"
-        value=0
-      )
-    .form-group
-      label(for="stock") Số lượng
-      input(
-        type="number"
-        min="0"
-        class="form-control" 
-        name="stock" 
-        id="stock"
-        value=0
       )
     .form-group
       label(for="thumb") Hình ảnh

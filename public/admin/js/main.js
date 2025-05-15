@@ -1,3 +1,4 @@
+//change status
 const buttonStatus = document.querySelectorAll("[button-status]");
 
 for (let i = 0; i < buttonStatus.length; i++) {
@@ -16,6 +17,7 @@ for (let i = 0; i < buttonStatus.length; i++) {
   });
 }
 
+//search
 const formSearch = document.querySelector("#form-search");
 
 if (formSearch) {
@@ -52,7 +54,6 @@ for (let i = 0; i < btnPaginations.length; i++) {
 const formChangeMulti = document.querySelector("#form-change-multi");
 
 if (formChangeMulti) {
-  const inputDataChange = formChangeMulti.querySelector('input[name="ids"]');
   const btnCheckAll = document.querySelector('input[name="checkAll"]');
 
   const btnsChangeMulti = document.querySelectorAll('input[name="id-change"]');
@@ -114,24 +115,28 @@ if (formChangeMulti) {
 
     e.target.elements.ids.value = arr.join(", ");
 
-    const currentUrl = window.location.pathname + window.location.search;
-    const redirect = encodeURIComponent(currentUrl);
-
     if (arr.length > 0) {
+      const currentUrl = window.location.pathname + window.location.search;
+      const redirect = encodeURIComponent(currentUrl);
+      const inputDataChange =
+        formChangeMulti.querySelector('input[name="ids"]');
+
       const actionForm = formChangeMulti.action;
       const path = `${actionForm}&redirect=${redirect}`;
-      formChangeMulti.action = path;
 
       if (typeChange === "delete-all") {
         const isConfirm = confirm("Are you sure want to delete these?");
         if (isConfirm) {
+          formChangeMulti.action = path;
           formChangeMulti.submit();
+        } else {
+          //nothing here...
         }
       } else {
+        formChangeMulti.action = path;
         formChangeMulti.submit();
       }
     } else {
-      //alert(...)
       alert("Vui lòng chọn ít nhất 1!");
     }
   });
@@ -148,7 +153,6 @@ if (alertElement) {
 }
 
 //preview image
-
 const inputImgaePreview = document.querySelector("[input-preview-image]");
 
 if (inputImgaePreview) {
@@ -182,4 +186,37 @@ if (inputImgaePreview) {
   //   e.preventDefault();
   //   console.log([e.target]);
   // });
+}
+
+//sort
+const sortElement = document.querySelector("[sort]");
+if (sortElement) {
+  const url = new URL(window.location.href);
+  const sortSelect = sortElement.querySelector("[sort-select]");
+  const sortKeyQuery = url.searchParams.get("sortKey");
+  const sortValueQuery = url.searchParams.get("sortValue");
+  const btnClear = sortElement.querySelector("[sort-clear]");
+
+  if (sortKeyQuery && sortValueQuery) {
+    const option = sortSelect.querySelector(
+      `option[value="${sortKeyQuery}-${sortValueQuery}"]`
+    );
+    option.selected = true;
+  }
+  sortSelect.addEventListener("change", () => {
+    const stringSort = sortSelect.value;
+    const [sortKey, sortValue] = stringSort.split("-");
+    url.searchParams.set("sortKey", sortKey);
+    url.searchParams.set("sortValue", sortValue);
+
+    window.location.href = url.href;
+  });
+
+  btnClear.addEventListener("click", () => {
+    if (sortKeyQuery && sortValueQuery) {
+      url.searchParams.delete("sortKey");
+      url.searchParams.delete("sortValue");
+      window.location.href = url.href;
+    }
+  });
 }

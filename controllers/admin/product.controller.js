@@ -1,6 +1,8 @@
 const Product = require("../../models/product.model");
+const ProductCategory = require("../../models/product-category.model");
 const system = require("../../config/system");
 
+const createTree = require("../../helpers/createTree");
 const filterStatus = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
@@ -15,6 +17,14 @@ module.exports.index = async (req, res) => {
   let filtersStatus = filterStatus(req.query);
   if (req.query.status) {
     find.status = req.query.status;
+  }
+
+  //sort
+  let sort = {};
+  if (req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  } else {
+    sort["position"] = "desc";
   }
 
   //search
@@ -37,7 +47,7 @@ module.exports.index = async (req, res) => {
   );
 
   const products = await Product.find(find)
-    .sort({ position: "desc" })
+    .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
   res.render("admin/pages/products/index", {
@@ -113,9 +123,16 @@ module.exports.deleteItem = async (req, res) => {
 };
 
 //[GET] /admin/products/create
-module.exports.create = (req, res) => {
+module.exports.create = async (req, res) => {
+  let findCategory = {
+    deleted: false,
+  };
+  const recordsCategory = await ProductCategory.find(findCategory);
+  const newRecordsCategory = createTree.create(recordsCategory, "");
+
   res.render("admin/pages/products/create", {
     titlePage: "Create new product",
+    records: newRecordsCategory,
   });
 };
 
@@ -147,10 +164,14 @@ module.exports.edit = async (req, res) => {
     };
 
     const product = await Product.findOne(find);
+    const recordsCategory = await ProductCategory.find({ deleted: false });
+
+    const newRecords = createTree.create(recordsCategory, "");
 
     res.render("admin/pages/products/edit", {
       titlePage: "Edit product",
       product: product,
+      records: newRecords,
     });
   } catch (error) {
     req.flash("error", "Không tìm thấy sản phẩm");

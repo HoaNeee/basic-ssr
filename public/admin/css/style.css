@@ -27,22 +27,24 @@ header .inner-header-content a {
 /* sider */
 
 .main .sider {
-  width: 20%;
+  width: 15%;
   min-height: 100vh;
-  background-color: #686868;
+  background-color: #474747;
   color: white;
 }
 
 .main .sider .inner-content {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 .main .sider .inner-content a {
   padding: 10px;
   color: white;
+  border-bottom: 1px solid white;
 }
 .main .sider .inner-content a:hover {
-  background: #474747;
+  background: #323232;
 }
 
 /* content */

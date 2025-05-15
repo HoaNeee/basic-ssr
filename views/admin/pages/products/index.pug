@@ -4,6 +4,7 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/formChangeMulti.pug
 include ../../mixins/alert.pug
+include ../../mixins/sort.pug
 
 block main 
   +alert-success(2500)
@@ -12,12 +13,17 @@ block main
   h1 Trang products
   .card
     .card-header 
-      p Bộ lọc
+      p Bộ lọc và tìm kiếm
     .card-body
       .row
-        .col-6
+        .col-4
+          p(class="mb-2") Trạng thái
           +filterStatus(filtersStatus)
-        .col-6
+        .col-4 
+         p(class="mb-2") Sắp xếp
+          +formSort()
+        .col-4
+          p(class="mb-2") Từ khóa
           +formSearch(query)
 
   +formChangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`)
