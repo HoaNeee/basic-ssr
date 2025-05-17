@@ -58,17 +58,19 @@ if (formChangeMulti) {
 
   const btnsChangeMulti = document.querySelectorAll('input[name="id-change"]');
 
-  btnCheckAll.addEventListener("click", () => {
-    let checked = false;
-    if (btnCheckAll.checked) {
-      checked = true;
-    } else checked = false;
+  if (btnCheckAll) {
+    btnCheckAll.addEventListener("click", () => {
+      let checked = false;
+      if (btnCheckAll.checked) {
+        checked = true;
+      } else checked = false;
 
-    for (let i = 0; i < btnsChangeMulti.length; i++) {
-      const btn = btnsChangeMulti[i];
-      btn.checked = checked;
-    }
-  });
+      for (let i = 0; i < btnsChangeMulti.length; i++) {
+        const btn = btnsChangeMulti[i];
+        btn.checked = checked;
+      }
+    });
+  }
 
   for (let i = 0; i < btnsChangeMulti.length; i++) {
     const btn = btnsChangeMulti[i];

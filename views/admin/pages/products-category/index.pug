@@ -1,29 +1,39 @@
 extends ../../layouts/default.pug
 include ../../mixins/table-tree.pug
+include ../../mixins/formChangeMulti.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/sort.pug
+include ../../mixins/search.pug
 
-block main 
-  h1 Danh mục sản phẩm
-
-  .card 
-    .card-header 
-      p Options 
-    .card-body 
-      a(class="btn btn-outline-success" href=`${prefixAdmin}/products-category/create`) + Thêm mới
-    
-  
-  table(
-    class="table table-hover mt-4"
-  ) 
-    thead 
-      tr  
-        th 
-          input(type="checkbox" name="checkAll")
-        th STT
-        th Hình ảnh
-        th Tiêu đề
-        th Vị trí
-        th Trạng thái 
-        th Hành động 
-       
-    tbody 
-      +table-tree(records)
+block main
+  - const optionsChange = [{title: "Hoạt động", value: "active"}, {title: "Dừng hoạt động", value: "inactive"}, {title: "Thay đổi vị trí", value: "change-position"},{title: "Xóa tất cả", value: "delete-all"}]
+  - if(roles.permissions.includes(`products-category-read`))
+      h1 Danh mục sản phẩm
+      .card 
+        .card-header 
+          p Bộ lọc và tìm kiếm 
+        .card-body 
+          .row 
+            .col-6
+              +formSort('category')
+            .col-6 
+              +formSearch()
+      +formChangeMulti(`${prefixAdmin}/products-category/change-multi?_method=PATCH`, `products-category`, optionsChange, 'products-category')
+      table(
+        class="table table-hover mt-4"
+      ) 
+        thead 
+          tr  
+            th 
+              input(type="checkbox" name="checkAll")
+            th STT
+            th Hình ảnh
+            th Tiêu đề
+            th Vị trí
+            th Trạng thái 
+            th Hành động 
+          
+        tbody 
+          +table-tree(records)
+  - else 
+      h2 Bạn không có quyền

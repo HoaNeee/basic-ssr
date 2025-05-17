@@ -1,22 +1,23 @@
-mixin formChangeMulti(action)
-  .card.mt-3.mb-2
-    .card-header 
-      p Options 
-    .card-body
-      .row 
-        .col-8
-          form(
-            action= action
-            id="form-change-multi"
-            method="POST"
-          ) 
-            .d-inline-flex.align-items-center
-              select(class="form-control" name="type")
-                option(value="active") Hoạt động 
-                option(value="inactive") Dừng hoạt động
-                option(value="delete-all") Xóa tất cả
-                option(value="change-position") Thay đổi vị trí
-              input(type="text" class="form-control d-none" name="ids")
-              button(type="submit" class="btn btn-primary btn-apdung") Áp dụng
-        .col-4 
-          a(class="btn btn-outline-success" href=`${prefixAdmin}/products/create`) + Thêm mới
+mixin formChangeMulti(action, suffix, options = [], permission)
+  - if(roles.permissions.includes(`${permission}-create`) || roles.permissions.includes(`${permission}-edit`))
+    .card.mt-3.mb-2
+      .card-header 
+        p Options 
+      .card-body
+        .row 
+          - if(roles.permissions.includes(`${permission}-edit`))
+              .col-8
+                form(
+                  action= action
+                  id="form-change-multi"
+                  method="POST"
+                ) 
+                  .d-inline-flex.align-items-center
+                    select(class="form-control" name="type")
+                      each item in options 
+                        option(value= item.value) #{item.title}
+                    input(type="text" class="form-control d-none" name="ids")
+                    button(type="submit" class="btn btn-primary btn-apdung") Áp dụng
+          - if(roles.permissions.includes(`${permission}-create`))
+              .col-4 
+                a(class="btn btn-outline-success" href=`${prefixAdmin}/${suffix}/create`) + Thêm mới

@@ -6,8 +6,11 @@ const cookieParser = require("cookie-parser");
 const sessison = require("express-session");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-
 const app = express();
+
+//config database
+const database = require("./config/database");
+database.connect();
 
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,10 +24,6 @@ app.use(
   "/tinymce",
   express.static(path.join(__dirname, "node_modules", "tinymce"))
 );
-
-//config database
-const database = require("./config/database");
-database.connect();
 
 const route = require("./routes/client/index.route");
 const routeAdmin = require("./routes/admin/index.route");

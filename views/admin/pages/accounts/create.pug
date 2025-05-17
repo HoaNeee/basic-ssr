@@ -1,0 +1,86 @@
+extends ../../layouts/default.pug
+include ../../mixins/formChangeMulti.pug
+include ../../mixins/alert.pug
+
+
+
+block main 
+  //- Check if only if one role
+  h2 Trang tạo tài khoản mới
+  +alert-error(2500)
+  - if(roles.permissions.includes(`accounts-create`))
+      form(
+        action=`${prefixAdmin}/accounts/create`
+        method="POST"
+        enctype="multipart/form-data"
+        autocomplete="on"
+        )
+        .form-group
+          label(for="fullname") Họ tên*
+          input(
+            type="text" 
+            class="form-control" 
+            name="fullname"
+            id="fullname" 
+            required
+          ) 
+        .form-group
+          label(for="email") Email*
+          input(
+            type="email" 
+            class="form-control" 
+            name="email"
+            id="email" 
+            required
+          ) 
+        .form-group
+          label(for="pass") Mật khẩu*
+          input(
+            type="password" 
+            class="form-control" 
+            name="password"
+            id="pass"
+            required
+          ) 
+        .form-group
+          label(for="phone") Số điện thoại
+          input(
+            type="text" 
+            class="form-control" 
+            name="phone" 
+            id="phone"
+          )
+
+        .form-group
+          label(for="avatar") Avatar
+          input(
+            type="file"
+            min="0"
+            class="form-control-file" 
+            name="avatar" 
+            id="avatar"
+            accept="image/*"
+            input-preview-image
+          )
+
+          div(class="img-container")
+            img(src="", alt="" image-preview)
+            div(class="remove-image")
+              span X
+        .form-group
+          label(for="role") Phân quyền 
+          select(name="role_id" class="form-control")
+            each item in roles
+              option(value=item._id) #{item.title}
+
+        .my-2 
+          .form-check 
+            input(type="radio" name="status" id="statusActive" value="active" checked)
+            label(for="statusActive" class="form-check-label") Hoạt động
+          .form-check 
+            input(type="radio" name="status" id="statusInactive" value="inactive" )
+            label(for="statusInactive" class="form-check-label") Dừng hoạt động
+        
+        button(class="btn btn-primary" type="submit") Tạo mới tài khoản
+  - else
+      h2 Bạn không có quyền   

@@ -4,73 +4,75 @@ include ../../mixins/select-tree.pug
 
 block main 
   +alert-error(3000)
-  
-  h2 Chỉnh sửa danh mục
-  form(
-    action=`${prefixAdmin}/products-category/edit/${record._id}?_method=PATCH` 
-    method="POST" 
-    enctype="multipart/form-data"
-  )
-    .form-group
-      label(for="title") Tiêu đề
-      input(
-        type="text" 
-        class="form-control" 
-        name="title" 
-        id="title"
-        required
-        value= record.title
+  - if(roles.permissions.includes(`products-category-edit`))
+      h2 Chỉnh sửa danh mục
+      form(
+        action=`${prefixAdmin}/products-category/edit/${record._id}?_method=PATCH` 
+        method="POST" 
+        enctype="multipart/form-data"
       )
-    .form-group
-      label(for="parent_id") Danh mục cha
-      select(name="parent_id" class="form-control")
-        option(value="") -- Chọn danh mục -- 
-        +select-tree(allRecordsCategory, 1, record.parent_id, record._id)
+        .form-group
+          label(for="title") Tiêu đề
+          input(
+            type="text" 
+            class="form-control" 
+            name="title" 
+            id="title"
+            required
+            value= record.title
+          )
+        .form-group
+          label(for="parent_id") Danh mục cha
+          select(name="parent_id" class="form-control")
+            option(value="") -- Chọn danh mục -- 
+            +select-tree(allRecordsCategory, 1, record.parent_id, record._id)
 
-    .form-group
-      label(for="desc") Mô tả
-      textarea(
-        class="form-control textarea-mce" 
-        name="description" 
-        id="desc"
-        rows=4
-      ) #{record.description}
-    .form-group
-      label(for="thumb") Hình ảnh
-      input(
-        type="file"
-        min="0"
-        class="form-control-file" 
-        name="thumbnail" 
-        id="thumb"
-        accept="image/*"
-        input-preview-image
-      )
+        .form-group
+          label(for="desc") Mô tả
+          textarea(
+            class="form-control textarea-mce" 
+            name="description" 
+            id="desc"
+            rows=4
+          ) #{record.description}
+        .form-group
+          label(for="thumb") Hình ảnh
+          input(
+            type="file"
+            min="0"
+            class="form-control-file" 
+            name="thumbnail" 
+            id="thumb"
+            accept="image/*"
+            input-preview-image
+          )
 
-      div(class="img-container")
-        img(src=record.thumbnail, alt="" image-preview)
-        div(class="remove-image")
-          span X 
-      
+          div(class="img-container")
+            img(src=record.thumbnail, alt="" image-preview)
+            div(class="remove-image")
+              span X 
+          
 
-    .form-group
-      label(for="pos") Vị trí
-      input(
-        type="number"
-        min="0"
-        class="form-control" 
-        name="position" 
-        id="pos"
-        value=record.position
-      )
-    
-    .my-2 
-      .form-check 
-        input(type="radio" name="status" id="statusActive" value="active" checked= (record.status === 'active' ? true : false))
-        label(for="statusActive" class="form-check-label") Hoạt động
-      .form-check 
-        input(type="radio" name="status" id="statusInactive" value="inactive" checked= (record.status === 'active' ? false : true))
-        label(for="statusInactive" class="form-check-label") Dừng hoạt động
-    
-    button(class="btn btn-primary" type="submit") Chỉnh sửa
+        .form-group
+          label(for="pos") Vị trí
+          input(
+            type="number"
+            min="0"
+            class="form-control" 
+            name="position" 
+            id="pos"
+            value=record.position
+          )
+        
+        .my-2 
+          .form-check 
+            input(type="radio" name="status" id="statusActive" value="active" checked= (record.status === 'active' ? true : false))
+            label(for="statusActive" class="form-check-label") Hoạt động
+          .form-check 
+            input(type="radio" name="status" id="statusInactive" value="inactive" checked= (record.status === 'active' ? false : true))
+            label(for="statusInactive" class="form-check-label") Dừng hoạt động
+        
+        button(class="btn btn-primary" type="submit") Chỉnh sửa
+  - else 
+      h2 Bạn không có quyền
   

@@ -9,80 +9,91 @@ include ../../mixins/sort.pug
 block main 
   +alert-success(2500)
   +alert-error(2500)
+  - const optionsChange = [{title: "Hoạt động", value: "active"}, {title: "Dừng hoạt động", value: "inactive"}, {title: "Thay đổi vị trí", value: "change-position"},{title: "Xóa tất cả", value: "delete-all"}]
+  - if(roles.permissions.includes('products-read'))
+      h1 Trang products
+      .card
+        .card-header 
+          p Bộ lọc và tìm kiếm
+        .card-body
+          .row
+            .col-4
+              p(class="mb-2") Trạng thái
+              +filterStatus(filtersStatus)
+            .col-4 
+              p(class="mb-2") Sắp xếp
+                +formSort('product')
+            .col-4
+              p(class="mb-2") Từ khóa
+              +formSearch(query)
+
+      +formChangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`, 'products', optionsChange, 'products')
+
+      table(
+        class="table table-hover"
+      ) 
+        thead 
+          tr  
+            th 
+              input(type="checkbox" name="checkAll")
+            th STT
+            th Hình ảnh
+            th Tiêu đề
+            th Giá
+            th Vị trí
+            th Trạng thái 
+            th Hành động 
+          
+        tbody 
+          each item,index in products 
+            tr 
+              td 
+                input(type="checkbox" value=item._id name="id-change")
+              td #{index + 1}
+              td 
+                img(src=item.thumbnail, alt="image" width="100px" height="50px")
+              td 
+                p #{item.title}
+              td 
+                p #{item.price}
+              td 
+                input(type="number" min="1" value=item.position style="width:100px;" name="position")
+              - if(roles.permissions.includes('products-edit'))
+                  td 
+                    if(item.status === "active")
+                      a(href="javascript:;" class="badge badge-success" data-status="active" data-id=item._id btn-change-status) Hoạt động
+                    else
+                      a(href="javascript:;" class="badge badge-danger" data-status="inactive" data-id=item._id btn-change-status) Dừng hoạt động
+              - else 
+                  td 
+                    if(item.status === "active")
+                      span(href="javascript:;" class="badge badge-success") Hoạt động
+                    else
+                      span(href="javascript:;" class="badge badge-danger") Dừng hoạt động
+              td 
+                a(href=`${prefixAdmin}/products/detail/${item._id}` class="btn btn-secondary btn-sm") Chi tiết
+                - if(roles.permissions.includes('products-edit'))
+                    a(class="btn btn-warning btn-sm mx-2" href=`${prefixAdmin}/products/edit/${item._id}`) Sửa
+                - if(roles.permissions.includes('products-delete')) 
+                    button(class="btn btn-danger btn-sm" btn-delete value= item._id) Xóa 
       
-  h1 Trang products
-  .card
-    .card-header 
-      p Bộ lọc và tìm kiếm
-    .card-body
-      .row
-        .col-4
-          p(class="mb-2") Trạng thái
-          +filterStatus(filtersStatus)
-        .col-4 
-         p(class="mb-2") Sắp xếp
-          +formSort()
-        .col-4
-          p(class="mb-2") Từ khóa
-          +formSearch(query)
+        form(
+          action=""
+          method="POST"
+          id="form-change-status"
+          data-path=`${prefixAdmin}/products/change-status`
+        ) 
 
-  +formChangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`)
-
-  table(
-    class="table table-hover"
-  ) 
-    thead 
-      tr  
-        th 
-          input(type="checkbox" name="checkAll")
-        th STT
-        th Hình ảnh
-        th Tiêu đề
-        th Giá
-        th Vị trí
-        th Trạng thái 
-        th Hành động 
-       
-    tbody 
-      each item,index in products 
-        tr 
-          td 
-            input(type="checkbox" value=item._id name="id-change")
-          td #{index + 1}
-          td 
-            img(src=item.thumbnail, alt="image" width="100px" height="50px")
-          td 
-            p #{item.title}
-          td 
-            p #{item.price}
-          td 
-            input(type="number" min="1" value=item.position style="width:100px;" name="position")
-          td 
-            if(item.status === "active")
-              a(href="javascript:;" class="badge badge-success" data-status="active" data-id=item._id btn-change-status) Hoạt động
-            else
-              a(href="javascript:;" class="badge badge-danger" data-status="inactive" data-id=item._id btn-change-status) Dừng hoạt động
-            
-          td 
-            a(href=`${prefixAdmin}/products/detail/${item._id}` class="btn btn-secondary btn-sm") Chi tiết
-            a(class="btn btn-warning btn-sm mx-2" href=`${prefixAdmin}/products/edit/${item._id}`) Sửa 
-            button(class="btn btn-danger btn-sm" btn-delete value= item._id) Xóa 
-  
-    form(
-      action=""
-      method="POST"
-      id="form-change-status"
-      data-path=`${prefixAdmin}/products/change-status`
-    ) 
-
-    form(
-      action=""
-      method="POST"
-      id="form-delete-item"
-      data-path=`${prefixAdmin}/products/delete`
-    ) 
+        form(
+          action=""
+          method="POST"
+          id="form-delete-item"
+          data-path=`${prefixAdmin}/products/delete`
+        ) 
 
     
-  +pagination(objPagi)
+      +pagination(objPagi)
+  - else
+      h2 Bạn không có quyền truy cập
 
   script(src="/admin/js/product.js") 

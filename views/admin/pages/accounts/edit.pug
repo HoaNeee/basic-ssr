@@ -1,0 +1,86 @@
+extends ../../layouts/default.pug
+include ../../mixins/formChangeMulti.pug
+include ../../mixins/alert.pug
+
+block main 
+  +alert-error(2500)
+  +alert-success(2500)
+  - if(roles.permissions.includes(`accounts-edit`))
+      h2 Chỉnh sửa tài khoản
+      form(
+        action=`${prefixAdmin}/accounts/edit/${account._id}?_method=PATCH`
+        method="POST"
+        enctype="multipart/form-data"
+      )
+        .form-group
+          label(for="fullname") Họ tên*
+          input(
+            type="text" 
+            class="form-control" 
+            name="fullname"
+            id="fullname" 
+            required
+            value= account.fullname
+          ) 
+        .form-group
+          label(for="email") Email*
+          input(
+            type="email" 
+            class="form-control" 
+            name="email"
+            id="email" 
+            value=account.email
+            required
+          ) 
+        .form-group
+          label(for="pass") Mật khẩu* (Đặt lại mật khẩu)
+          input(
+            type="password" 
+            class="form-control" 
+            name="password"
+            id="pass"
+            value=""
+          ) 
+        .form-group
+          label(for="phone") Số điện thoại
+          input(
+            type="text" 
+            class="form-control" 
+            name="phone" 
+            id="phone"
+            value=account.phone
+          )
+
+        .form-group
+          label(for="avatar") Avatar
+          input(
+            type="file"
+            min="0"
+            class="form-control-file" 
+            name="avatar" 
+            id="avatar"
+            accept="image/*"
+            input-preview-image
+          )
+
+          div(class="img-container")
+            img(src=account.avatar, alt="" image-preview)
+            div(class="remove-image")
+              span X
+        .form-group
+          label(for="role") Phân quyền 
+          select(name="role_id" class="form-control")
+            each item in recordsRole
+              option(value=item._id selected=(item._id == account.role_id)) #{item.title}
+
+        .my-2 
+          .form-check 
+            input(type="radio" name="status" id="statusActive" value="active" checked)
+            label(for="statusActive" class="form-check-label") Hoạt động
+          .form-check 
+            input(type="radio" name="status" id="statusInactive" value="inactive" )
+            label(for="statusInactive" class="form-check-label") Dừng hoạt động
+        
+        button(class="btn btn-primary" type="submit") Tạo mới tài khoản 
+  - else 
+      h2 Bạn không có quyền  

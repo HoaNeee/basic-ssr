@@ -1,0 +1,53 @@
+extends ../../layouts/default.pug
+include ../../mixins/formChangeMulti.pug
+
+
+
+block main 
+  - const optionsChange = [{title: "Hoạt động", value: "active"}, {title: "Dừng hoạt động", value: "inactive"},{title: "Xóa tất cả", value: "delete-all"}]
+  - if(roles.permissions.includes(`accounts-read`))
+      h2 Trang tài khoản
+      +formChangeMulti(``, 'accounts', optionsChange, 'accounts')
+      
+      table(
+        class="table table-hover mt-4"
+      ) 
+        thead 
+          tr  
+            th 
+              input(type="checkbox" name="checkAll")
+            th STT
+            th Email
+            th Phân quyền
+            th Trạng thái
+            th Hành động 
+          
+        tbody 
+          each item,index in records 
+            tr 
+              td 
+                input(type="checkbox" value=item._id name="id-change")
+              td #{index + 1}
+              td #{item.email}
+              td #{item.roleName}
+              - if(roles.permissions.includes(`accounts-edit`))
+                  td 
+                    if(item.status === "active")
+                      a(href="javascript:;" class="badge badge-success" data-status="active" data-id=item._id btn-change-status) Hoạt động
+                    else
+                      a(href="javascript:;" class="badge badge-danger" data-status="inactive" data-id=item._id btn-change-status) Dừng hoạt động
+              - else 
+                  td 
+                    if(item.status === "active")
+                      span(class="badge badge-success") Hoạt động
+                    else
+                      span(class="badge badge-danger") Dừng hoạt động
+              td 
+                a(href=`${prefixAdmin}/accounts/detail/${item._id}` class="btn btn-secondary btn-sm") Chi tiết
+                a(class="btn btn-warning btn-sm mx-2" href=`${prefixAdmin}/accounts/edit/${item._id}`) Sửa 
+                - if(roles.permissions.includes(`accounts-delete`))
+                    button(class="btn btn-danger btn-sm" btn-delete value= item._id) Xóa
+  - else
+      h2 Bạn không có quyền  
+            
+  
