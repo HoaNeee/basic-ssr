@@ -1,11 +1,14 @@
 extends ../../layouts/default.pug
 include ../../mixins/formChangeMulti.pug
+include ../../mixins/alert.pug
 
 block main 
+  +alert-success(2500)
+  +alert-error(2500)
   - const optionsChange = [{title: "Xóa tất cả", value: "delete-all"}]
   - if(roles.permissions.includes(`roles-read`))
       h2 Trang nhóm quyền
-      +formChangeMulti(``, 'roles', optionsChange, 'roles')
+      +formChangeMulti(`${prefixAdmin}/roles/change-multi?_method=PATCH`, 'roles', optionsChange, 'roles')
 
       table(
         class="table table-hover mt-4"
@@ -15,7 +18,7 @@ block main
             th 
               input(type="checkbox" name="checkAll")
             th STT
-            th Tiêu đề
+            th Tên nhóm
             th Hành động 
           
         tbody 
@@ -31,7 +34,15 @@ block main
                     a(class="btn btn-warning btn-sm mx-2" href=`${prefixAdmin}/roles/edit/${item._id}`) Sửa 
                 - if(roles.permissions.includes(`roles-delete`))
                     button(class="btn btn-danger btn-sm" btn-delete value= item._id) Xóa
+  
+      form(
+          action=""
+          method="POST"
+          id="form-delete-item"
+          data-path=`${prefixAdmin}/roles/delete`
+        ) 
   - else 
-      h2 Bạn không có quyền  
+      h2 Bạn không có quyền
+  script(src="/admin/js/role.js")  
             
   

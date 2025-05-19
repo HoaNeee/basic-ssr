@@ -1,0 +1,12 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+
+block main
+  .product-detail
+    - if(role.title)
+        h2 #{role.title}
+    - if(role.description)
+        p #{role.description}
+    p Quyền truy cập: 
+      a(href=`${prefixAdmin}/roles/permission`  class="btn btn-primary btn-sm") Xem chi tiết

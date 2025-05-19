@@ -1,4 +1,4 @@
-//change status
+//change status filter
 const buttonStatus = document.querySelectorAll("[button-status]");
 
 for (let i = 0; i < buttonStatus.length; i++) {
@@ -56,7 +56,9 @@ const formChangeMulti = document.querySelector("#form-change-multi");
 if (formChangeMulti) {
   const btnCheckAll = document.querySelector('input[name="checkAll"]');
 
-  const btnsChangeMulti = document.querySelectorAll('input[name="id-change"]');
+  const btnsChangeMulti = document.querySelectorAll(
+    "tbody:not([style*='display: none']) input[name='id-change']"
+  );
 
   if (btnCheckAll) {
     btnCheckAll.addEventListener("click", () => {
@@ -114,7 +116,6 @@ if (formChangeMulti) {
         } else arr.push(id);
       }
     }
-
     e.target.elements.ids.value = arr.join(", ");
 
     if (arr.length > 0) {

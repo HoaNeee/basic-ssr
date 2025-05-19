@@ -21,6 +21,9 @@ router.post(
 
 router.get("/edit/:id", controller.edit);
 
+router.patch("/change-status/:status/:id", controller.changeStatus);
+router.patch("/change-multi", controller.changeMulti);
+
 router.patch(
   "/edit/:id",
   upload.single("thumbnail"),
@@ -28,5 +31,9 @@ router.patch(
   validates.createPost,
   controller.editPatch
 );
+
+router.delete("/delete/:id", controller.delete);
+
+router.get("/detail/:id", controller.detail);
 
 module.exports = router;

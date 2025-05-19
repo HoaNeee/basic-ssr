@@ -1,0 +1,76 @@
+extends ../../layouts/default.pug
+include ../../mixins/formChangeMulti.pug
+include ../../mixins/alert.pug
+
+block main 
+  +alert-error(2500)
+  +alert-success(2500)
+  
+  h2 Chỉnh sửa thông tin
+  form(
+    action=`${prefixAdmin}/my-info/edit?_method=PATCH`
+    method="POST"
+    enctype="multipart/form-data"
+  )
+    .form-group
+      label(for="fullname") Họ tên*
+      input(
+        type="text" 
+        class="form-control" 
+        name="fullname"
+        id="fullname" 
+        required
+        value= user.fullname
+      ) 
+    .form-group
+      label(for="email") Email*
+      input(
+        type="email" 
+        class="form-control" 
+        name="email"
+        id="email" 
+        value=user.email
+        required
+      ) 
+    //-PLIT
+    //- .form-group
+    //-   label(for="pass") Mật khẩu* (Đặt lại mật khẩu)
+    //-   input(
+    //-     type="password" 
+    //-     class="form-control" 
+    //-     name="password"
+    //-     id="pass"
+    //-     value=""
+    //-   ) 
+    .form-group
+      label(for="phone") Số điện thoại
+      input(
+        type="text" 
+        class="form-control" 
+        name="phone" 
+        id="phone"
+        value=user.phone
+      )
+
+    .form-group
+      label(for="avatar") Avatar
+      input(
+        type="file"
+        min="0"
+        class="form-control-file" 
+        name="avatar" 
+        id="avatar"
+        accept="image/*"
+        input-preview-image
+      )
+
+      div(class="img-container")
+        img(src=user.avatar, alt="" image-preview)
+        div(class="remove-image")
+          span X
+    
+    
+    button(class="btn btn-primary" type="submit") Chỉnh sửa  
+    
+    //- DO THEN
+    a(class="btn btn-danger ml-3") Đổi mật khẩu 

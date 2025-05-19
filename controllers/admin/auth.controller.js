@@ -7,7 +7,19 @@ const generate = require("../../helpers/generateString");
 //[GET] /admin/auth/login
 module.exports.login = async (req, res) => {
   if (req.cookies.token) {
-    res.redirect(`${system.prefixAdmin}/dashboard`);
+    const token = req.cookies.token;
+    const user = await Account.findOne({
+      token: token,
+      status: "active",
+      deleted: false,
+    });
+    if (!user) {
+      res.render("admin/pages/auth/login.pug", {
+        titlePage: "Đăng nhập",
+      });
+    } else {
+      res.redirect(`${system.prefixAdmin}/dashboard`);
+    }
   } else {
     res.render("admin/pages/auth/login.pug", {
       titlePage: "Đăng nhập",

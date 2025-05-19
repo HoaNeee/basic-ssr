@@ -21,6 +21,7 @@ router.post(
 );
 
 router.get("/edit/:id", controller.edit);
+router.patch("/change-status/:status/:id", controller.changeStatus);
 router.patch(
   "/edit/:id",
   upload.single("avatar"),
@@ -28,5 +29,11 @@ router.patch(
   validates.edit,
   controller.editPatch
 );
+
+router.delete("/delete/:id", controller.deleteItem);
+
+router.get("/detail/:id", controller.detail);
+
+router.patch("/change-multi", controller.changeMulti);
 
 module.exports = router;

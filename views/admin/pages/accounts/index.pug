@@ -1,13 +1,33 @@
 extends ../../layouts/default.pug
 include ../../mixins/formChangeMulti.pug
+include ../../mixins/search.pug
+include ../../mixins/sort.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/alert.pug
 
 
 
 block main 
+  +alert-success(2500)
+  +alert-error(2500)
   - const optionsChange = [{title: "Hoạt động", value: "active"}, {title: "Dừng hoạt động", value: "inactive"},{title: "Xóa tất cả", value: "delete-all"}]
   - if(roles.permissions.includes(`accounts-read`))
       h2 Trang tài khoản
-      +formChangeMulti(``, 'accounts', optionsChange, 'accounts')
+      .card 
+        .card-header 
+          p Bộ lọc và tìm kiếm 
+        .card-body 
+          .row 
+            .col-4 
+              p(class="mb-2") Trạng thái 
+              +filterStatus(filterStatus)
+            .col-4
+              p(class="mb-2") Sắp xếp
+              +formSort('account')
+            .col-4  
+              p(class="mb-2") Tìm kiếm
+              +formSearch(query)
+      +formChangeMulti(`${prefixAdmin}/accounts/change-multi?_method=PATCH`, 'accounts', optionsChange, 'accounts')
       
       table(
         class="table table-hover mt-4"
@@ -47,7 +67,15 @@ block main
                 a(class="btn btn-warning btn-sm mx-2" href=`${prefixAdmin}/accounts/edit/${item._id}`) Sửa 
                 - if(roles.permissions.includes(`accounts-delete`))
                     button(class="btn btn-danger btn-sm" btn-delete value= item._id) Xóa
+      form(
+          action=""
+          method="POST"
+          id="form-delete-item"
+          data-path=`${prefixAdmin}/accounts/delete`
+        ) 
+      form(action=``, method="post" data-path=`${prefixAdmin}/accounts/change-status` id="form-change-status") 
   - else
       h2 Bạn không có quyền  
+  script(src="/admin/js/account.js") 
             
   

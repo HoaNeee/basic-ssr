@@ -1,5 +1,6 @@
 const Product = require("../../models/product.model");
 const ProductCategory = require("../../models/product-category.model");
+const Account = require("../../models/account.model");
 const system = require("../../config/system");
 
 const createTree = require("../../helpers/createTree");
@@ -50,6 +51,16 @@ module.exports.index = async (req, res) => {
     .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
+
+  for (let i = 0; i < products.length; i++) {
+    const account = await Account.findOne({
+      _id: products[i].createdBy.account_id,
+    });
+    if (account) {
+      products[i].createdBy.accountName = account.fullname;
+    }
+  }
+
   res.render("admin/pages/products/index", {
     titlePage: "Products",
     products: products,
@@ -65,12 +76,25 @@ module.exports.changeStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id;
 
-  await Product.updateOne({ _id: id }, { status: status });
+  const user = res.locals.user;
+
+  await Product.updateOne(
+    { _id: id },
+    {
+      status: status,
+      $push: {
+        updatedBy: {
+          account_id: user._id,
+          updatedAt: new Date(),
+        },
+      },
+    }
+  );
 
   //co 2 lua chon cho redirect
   //1. dung req.get("Referer")
   //2. gui redirect tu phia client thong qua query || params -> recomend
-  const redirect = req.query.redirect;
+
   req.flash("success", "Cập nhật thành công!");
 
   res.redirect(req.get("Referer"));
@@ -78,44 +102,97 @@ module.exports.changeStatus = async (req, res) => {
 
 //[PATCH] /admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
-  const type = req.body.type;
-  const ids = req.body.ids.split(", ");
-  const redirect = req.query.redirect;
+  try {
+    const type = req.body.type;
+    const ids = req.body.ids.split(", ");
+    const redirect = req.query.redirect;
+    const user = res.locals.user;
 
-  switch (type) {
-    case "active":
-      await Product.updateMany({ _id: { $in: ids } }, { status: type });
-      break;
-    case "inactive":
-      await Product.updateMany({ _id: { $in: ids } }, { status: type });
-      break;
-    case "delete-all":
-      await Product.updateMany(
-        { _id: { $in: ids } },
-        { deleted: true, deletedAt: new Date() }
-      );
-      break;
-    case "change-position":
-      for (let i = 0; i < ids.length; i++) {
-        const [id, posValue] = ids[i].split("-");
-        await Product.updateOne({ _id: id }, { position: posValue });
-      }
-      break;
-    default:
-      break;
+    switch (type) {
+      case "active":
+        await Product.updateMany(
+          { _id: { $in: ids } },
+          {
+            status: type,
+            $push: {
+              updatedBy: {
+                account_id: user._id,
+                updatedAt: new Date(),
+              },
+            },
+          }
+        );
+        break;
+      case "inactive":
+        await Product.updateMany(
+          { _id: { $in: ids } },
+          {
+            status: type,
+            $push: {
+              updatedBy: {
+                account_id: user._id,
+                updatedAt: new Date(),
+              },
+            },
+          }
+        );
+        break;
+      case "delete-all":
+        await Product.updateMany(
+          { _id: { $in: ids } },
+          {
+            deleted: true,
+            deletedBy: {
+              account_id: user._id,
+              deletedAt: new Date(),
+            },
+          }
+        );
+        break;
+      case "change-position":
+        for (let i = 0; i < ids.length; i++) {
+          const [id, posValue] = ids[i].split("-");
+          await Product.updateOne(
+            { _id: id },
+            {
+              position: posValue,
+              $push: {
+                updatedBy: {
+                  account_id: user._id,
+                  updatedAt: new Date(),
+                },
+              },
+            }
+          );
+        }
+        break;
+      default:
+        break;
+    }
+    req.flash("success", "Cập nhật thành công!");
+    res.redirect(redirect);
+  } catch (error) {
+    req.flash("error", "Đã có lỗi xảy ra!");
+
+    res.redirect(redirect);
   }
-  req.flash("success", "Cập nhật thành công!");
-  res.redirect(redirect);
 };
 
 //[DELETE] /admin/products/delete/:id
 module.exports.deleteItem = async (req, res) => {
   const id = req.params.id;
 
-  //recomend for deletedAt
+  //recomend for deletedBy
+  const user = res.locals.user;
   await Product.updateOne(
     { _id: id },
-    { deleted: true, deletedAt: new Date() }
+    {
+      deleted: true,
+      deletedBy: {
+        account_id: user._id,
+        deletedAt: new Date(),
+      },
+    }
   );
   req.flash("success", "Xóa thành công!");
   const urlBack = req.get("Referer");
@@ -148,7 +225,11 @@ module.exports.createProduct = async (req, res) => {
     req.body.position = count + 1;
   }
 
+  const user = res.locals.user;
+
   const product = new Product(req.body);
+  product.createdBy.account_id = user.id;
+
   await product.save();
 
   res.redirect("/admin/products");
@@ -190,8 +271,19 @@ module.exports.editPatch = async (req, res) => {
     req.body.position = Number(req.body.position);
 
     // WHEN USER UPDATE WITH IMAGE HAVE PROBLEM, FIX THEN
-
-    await Product.updateOne({ _id: id }, req.body);
+    const user = res.locals.user;
+    await Product.updateOne(
+      { _id: id },
+      {
+        ...req.body,
+        $push: {
+          updatedBy: {
+            account_id: user._id,
+            updatedAt: new Date(),
+          },
+        },
+      }
+    );
     req.flash("success", "Cập nhật thành công");
     res.redirect(req.get("Referer"));
   } catch (error) {
@@ -210,6 +302,33 @@ module.exports.detail = async (req, res) => {
     };
 
     const product = await Product.findOne(find);
+
+    if (product.product_category_id) {
+      const productCategory = await ProductCategory.findOne({
+        _id: product.product_category_id,
+      });
+      product.categoryName = productCategory.title;
+    }
+
+    if (product.updatedBy) {
+      for (let item of product.updatedBy) {
+        const account = await Account.findOne({
+          _id: item.account_id,
+        });
+        if (account) {
+          item.accountName = account.fullname;
+        }
+      }
+    }
+
+    if (product.createdBy) {
+      const account = await Account.findOne({
+        _id: product.createdBy.account_id,
+      });
+      if (account) {
+        product.createdBy.accountName = account.fullname;
+      }
+    }
 
     res.render("admin/pages/products/detail", {
       titlePage: product.title,

@@ -1,11 +1,15 @@
 const express = require("express");
 const path = require("path");
-const methodOverride = require("method-override");
-const flash = require("express-flash");
+const bodyParser = require("body-parser");
+const moment = require("moment");
+require("dotenv").config();
+
 const cookieParser = require("cookie-parser");
 const sessison = require("express-session");
-const bodyParser = require("body-parser");
-require("dotenv").config();
+
+const methodOverride = require("method-override");
+const flash = require("express-flash");
+
 const app = express();
 
 //config database
@@ -38,9 +42,10 @@ app.set("view engine", "pug");
 route(app);
 routeAdmin(app);
 
+//variable locals
 const system = require("./config/system");
 app.locals.prefixAdmin = system.prefixAdmin;
-
+app.locals.moment = moment;
 app.listen(process.env.PORT, () =>
   console.log(`server is running on port ${process.env.PORT}`)
 );

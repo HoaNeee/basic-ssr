@@ -1,0 +1,29 @@
+extends ../../layouts/default.pug
+include ../../mixins/formatDateTime.pug
+
+
+block main 
+  .product-detail 
+    h2 #{productCategory.title}
+    - if(productCategory.parent_id)
+        p Danh mục cha: 
+          strong #{productCategory.parentName}
+
+    if(productCategory.thumbnail)
+      img(src=productCategory.thumbnail, alt=productCategory.title style="width:200px;")
+
+    p Trạng thái: 
+      if(productCategory.status === "active")
+        span(class="badge badge-success") Hoạt động
+      else
+        span(class="badge badge-danger") Dừng hoạt động
+
+    p Vị trí: 
+      b #{productCategory.position}
+    
+    if(productCategory.description) 
+      p !{productCategory.description}
+
+
+  a(href=`${prefixAdmin}/products-category/edit/${productCategory._id}` class="btn btn-warning mt-3" )  Chỉnh sửa 
+      

@@ -5,6 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/formChangeMulti.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
+include ../../mixins/formatDateTime.pug
 
 block main 
   +alert-success(2500)
@@ -41,7 +42,8 @@ block main
             th Tiêu đề
             th Giá
             th Vị trí
-            th Trạng thái 
+            th Người tạo
+            th Trạng thái
             th Hành động 
           
         tbody 
@@ -58,6 +60,8 @@ block main
                 p #{item.price}
               td 
                 input(type="number" min="1" value=item.position style="width:100px;" name="position")
+              td 
+                p #{item.createdBy.accountName}
               - if(roles.permissions.includes('products-edit'))
                   td 
                     if(item.status === "active")

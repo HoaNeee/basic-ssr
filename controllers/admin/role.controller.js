@@ -83,3 +83,61 @@ module.exports.permissionPatch = async (req, res) => {
     res.redirect(`${system.prefixAdmin}/`);
   }
 };
+
+//[DELETE] /admin/roles/delete/:id
+module.exports.deleteItem = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await Role.updateOne({ _id: id }, { deleted: true, deletedAt: new Date() });
+    req.flash("success", "Xóa thành công!");
+    res.redirect(req.get("Referer"));
+  } catch (error) {
+    req.flash("error", "Có lỗi xảy ra!");
+    res.redirect(`${system.prefixAdmin}/roles`);
+  }
+};
+
+//[GET] /admin/roles/detail/:id
+module.exports.detail = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const role = await Role.findOne({ _id: id, deleted: false });
+
+    res.render("admin/pages/roles/detail.pug", {
+      titlePage: role.title,
+      role: role,
+    });
+  } catch (error) {
+    req.flash("error", "Có lỗi xảy ra!");
+    res.redirect(`${system.prefixAdmin}/roles`);
+  }
+};
+
+//[PATCH] /admin/roles/change-multi
+module.exports.changeMulti = async (req, res) => {
+  try {
+    const type = req.body.type;
+    const ids = req.body.ids.split(", ");
+    const redirect = req.query.redirect;
+
+    switch (type) {
+      case "delete-all":
+        await Role.updateMany(
+          { _id: { $in: ids } },
+          {
+            deleted: true,
+            deletedAt: new Date(),
+          }
+        );
+        break;
+      default:
+        break;
+    }
+    req.flash("success", "Cập nhật thành công!");
+    res.redirect(redirect);
+  } catch (error) {
+    req.flash("error", "Đã có lỗi xảy ra!");
+
+    res.redirect(redirect);
+  }
+};

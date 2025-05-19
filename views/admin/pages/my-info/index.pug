@@ -1,0 +1,20 @@
+extends ../../layouts/default.pug
+
+block main 
+  h2 Trang cá nhân
+  .product-detail
+    - if(user.avatar)
+        img(src=user.avatar, alt="image" style="width: 200px;")
+    - if(user.fullname)
+        p Họ tên: 
+          b #{user.fullname}
+    - if(user.email)
+        p Email: 
+          b #{user.email}
+    -if(user.phone)
+        p Số điện thoại:  
+          b #{user.phone}
+    p Nhóm quyền: 
+      span #{roles.title}
+    div 
+      a(href=`${prefixAdmin}/my-info/edit` class="btn btn-warning") Chỉnh sửa thông tin 

@@ -1,13 +1,16 @@
 extends ../../layouts/default.pug
+include ../../mixins/formatDateTime.pug
 
 
 block main 
   .product-detail 
     h2 #{product.title}
+    - if(product.product_category_id)
+        p Danh mục: 
+          strong #{product.categoryName}
     if(product.price)
       p Giá: 
         strong #{product.price}$
-    
     if(product.discountPercentage)
       p Giảm giá: 
         strong #{product.discountPercentage}%
@@ -17,17 +20,32 @@ block main
     if(product.thumbnail)
       img(src=product.thumbnail, alt=product.title style="width:200px;")
 
-    p Trạng thái 
+    p Trạng thái: 
       if(product.status === "active")
         span(class="badge badge-success") Hoạt động
       else
         span(class="badge badge-danger") Dừng hoạt động
 
-    p Vị trí:
+    p Vị trí: 
       b #{product.position}
     
     if(product.description) 
       p !{product.description}
+
+    - if(product.createdBy && product.createdBy.account_id)
+        p Tạo bởi: #{product.createdBy.accountName}
+        p Thời gian tạo: 
+          +formatDateTime(product.createdBy.createAt)
+    - if(product.updatedBy && product.updatedBy.length > 0)
+        p Danh sách chỉnh sửa:
+        ul 
+          each item in product.updatedBy 
+            li
+              p Người thay đổi: 
+                strong #{item.accountName}
+              p Thời gian: 
+                strong 
+                  +formatDateTime(item.updatedAt)
 
   a(href=`${prefixAdmin}/products/edit/${product._id}` class="btn btn-warning" )  Chỉnh sửa 
       

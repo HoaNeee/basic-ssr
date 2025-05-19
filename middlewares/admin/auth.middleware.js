@@ -8,6 +8,7 @@ module.exports.requireAuth = async (req, res, next) => {
   } else {
     const user = await Account.findOne({
       token: req.cookies.token,
+      status: "active",
       deleted: false,
     }).select("-password");
     if (!user) {
