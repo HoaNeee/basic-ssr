@@ -5,6 +5,8 @@
         a(href=`${prefixAdmin}/products-category`) Danh mục sản phẩm
     - if(roles.permissions.includes('products-read'))
         a(href=`${prefixAdmin}/products`) Sản phẩm
+    - if(roles.permissions.includes('news-read'))
+        a(href=`${prefixAdmin}/news`) Bài viết
     - if(roles.permissions.includes('roles-read'))
         a(href=`${prefixAdmin}/roles`) Nhóm quyền
     - if(roles.permissions.includes('roles-permission'))

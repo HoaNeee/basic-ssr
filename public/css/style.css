@@ -6,6 +6,7 @@ p {
   margin: 0;
 }
 
+/* header */
 header .inner-header {
   display: flex;
   justify-content: space-between;
@@ -13,9 +14,52 @@ header .inner-header {
   height: 80px;
 }
 
+/* menu */
+header ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+header .sub-menu {
+  position: relative;
+}
+
+header .sub-menu ul {
+  display: none;
+  position: absolute;
+  background: #ddd;
+  width: 150px;
+}
+header .sub-menu ul li {
+  padding: 10px;
+}
+header .sub-menu ul li a {
+  color: #000;
+}
+header .sub-menu ul li:hover {
+  background: #bcbbbb;
+}
+
+header .sub-menu:hover > ul {
+  display: block;
+  position: absolute;
+}
+
+header .sub-menu ul li:hover > ul {
+  display: block;
+  position: absolute;
+  background: #ddd;
+  right: 100%;
+  top: 0;
+  height: 100%;
+}
+
 header .inner-nav {
   display: flex;
-  gap: 5px;
+  gap: 10px;
+  list-style: none;
+  align-items: center;
 }
 
 header .inner-logo {

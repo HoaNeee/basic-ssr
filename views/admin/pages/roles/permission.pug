@@ -118,6 +118,29 @@ block main
         each item in records 
           td(class="text-center") 
             input(type="checkbox")
+      //- news
+      tr
+        th Bài viết
+      tr(name="news-read")
+        td Xem
+        each item in records 
+          td(class="text-center") 
+            input(type="checkbox")
+      tr(name="news-create") 
+        td Thêm mới
+        each item in records 
+          td(class="text-center") 
+            input(type="checkbox")
+      tr(name="news-edit") 
+        td Chỉnh sửa
+        each item in records 
+          td(class="text-center")
+            input(type="checkbox")
+      tr(name="news-delete") 
+        td Xóa
+        each item in records 
+          td(class="text-center") 
+            input(type="checkbox")
  
       
 

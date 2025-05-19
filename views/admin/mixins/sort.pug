@@ -7,7 +7,7 @@ mixin formSort(type)
             option(value="permission-desc") Quyền thấp - cao
         - if(type === 'category')
             option(value="tree-asc") Phân cấp 
-        - if(type === 'category' || type === 'products')
+        - if(type === 'category' || type === 'products' || type === 'news')
             option(value="position-desc") Vị trí giảm dần
             option(value="position-asc") Vị trí tăng dần
         - if(type === 'product')

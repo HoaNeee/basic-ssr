@@ -1,8 +1,15 @@
+include ../mixins/sub-menu.pug
+
 header(class="header")
   .container 
     .inner-header
       .inner-logo 
         img(src="/images/logo.jpg", alt="this is image")
-      .inner-nav 
-        a(href="/") Home 
-        a(href="/products") products 
+      ul(class="inner-nav") 
+        li 
+          a(href="/") Trang chủ 
+        li(class="sub-menu")
+          a(href="/products") Sản phẩm
+          +sub-menu(productsCategory, 'products')
+          
+                   

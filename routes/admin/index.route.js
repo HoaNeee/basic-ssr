@@ -4,7 +4,8 @@ const productCategoryRoute = require("./product-category.route");
 const rolesRoute = require("./roles.route");
 const accountRoute = require("./account.route");
 const authRoute = require("./auth.route");
-const myInfoRoute = require("../../routes/admin/my-info.route");
+const myInfoRoute = require("./my-info.route");
+const newsRoute = require("./news.route");
 
 const authMiddleware = require("../../middlewares/admin/auth.middleware");
 const system = require("../../config/system");
@@ -33,6 +34,7 @@ module.exports = (app) => {
   app.use(PATH_ADMIN + "/auth", authRoute);
 
   app.use(PATH_ADMIN + "/my-info", authMiddleware.requireAuth, myInfoRoute);
+  app.use(PATH_ADMIN + "/news", authMiddleware.requireAuth, newsRoute);
 
   // FIX THEN
   // app.use("/admin/", (req, res) => {

@@ -1,0 +1,63 @@
+extends ../../layouts/default.pug
+include ../../mixins/formChangeMulti.pug
+include ../../mixins/alert.pug
+include ../../mixins/search.pug
+include ../../mixins/sort.pug
+
+block main 
+  +alert-success(2500)
+  +alert-error(2500)
+  - const optionsChange = [{title: "Thay đổi vị trí", value: "change-position"},{title: "Xóa tất cả", value: "delete-all"}]
+  - if(roles.permissions.includes(`news-read`))
+      h2 Trang bài viết
+      .card 
+        .card-header 
+          p Bộ lọc
+        .card-body 
+          .row 
+            .col-6 
+              +formSort('news')
+            .col-6 
+              +formSearch(query)
+
+      +formChangeMulti(`${prefixAdmin}/news/change-multi?_method=PATCH`, 'news', optionsChange, 'news')
+
+      table(
+        class="table table-hover mt-4"
+      ) 
+        thead 
+          tr  
+            th 
+              input(type="checkbox" name="checkAll")
+            th STT
+            th Tiêu đề
+            th Vị trí
+            th Hành động 
+          
+        tbody 
+          each item,index in records
+            tr 
+              td 
+                input(type="checkbox" value=item._id name="id-change")
+              td #{index + 1}
+              td #{item.title}
+              td 
+                input(type="number" min="1" value=item.position style="width:100px;" name="position")
+              td 
+                a(href=`${prefixAdmin}/news/detail/${item._id}` class="btn btn-secondary btn-sm") Chi tiết
+                - if(roles.permissions.includes(`roles-edit`))
+                    a(class="btn btn-warning btn-sm mx-2" href=`${prefixAdmin}/news/edit/${item._id}`) Sửa 
+                - if(roles.permissions.includes(`roles-delete`))
+                    button(class="btn btn-danger btn-sm" btn-delete value= item._id) Xóa
+  
+      form(
+          action=""
+          method="POST"
+          id="form-delete-item"
+          data-path=`${prefixAdmin}/news/delete`
+        ) 
+  - else 
+      h2 Bạn không có quyền
+  script(src="/admin/js/news.js")  
+            
+  
