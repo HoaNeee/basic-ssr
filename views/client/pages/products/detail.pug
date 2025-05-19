@@ -3,24 +3,26 @@ extends ../../layouts/default.pug
 
 block main 
   .product-detail 
-    h2 #{product.title}
-    p Giá: 
-      strong #{product.price}$
-    p Giảm giá: 
-      strong #{product.discountPercent}%
-    p Còn lại: 
-      strong #{product.stock}$
-    img(src=product.thumbnail, alt=product.title style="width:200px;")
+    .row 
+      .col-6
+        .inner-image 
+          img(src=product.thumbnail, alt=product.title style="")
+      .col-6 
+        .inner-content
+          h2 #{product.title}
+          p(class="inner-price-new") #{product.priceNew}$
+          p(class="inner-price-old") #{product.price}$
 
-    p Trạng thái 
-      if(product.status === "active")
-        span(class="badge badge-success") Hoạt động
-      else
-        span(class="badge badge-danger") Dừng hoạt động
-
-    p Vị trí:
-      b #{product.position}
-    
+          p Giảm giá tới: 
+            strong(class="inner-discount") #{product.discountPercentage}%
+          p Còn lại: 
+            strong(class="inner-stock") #{product.stock}
+            span sản phẩm
+        form(action="")
+          .form-group 
+            input(type="number" class="form-control" min="1" max=product.stock value=1)
+          button(class="btn btn-success") Thêm vào giỏ hàng  
+    div(class="inner-desc-title") Mô tả sản phẩm 
     div !{product.description}
 
       

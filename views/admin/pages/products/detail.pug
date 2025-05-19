@@ -5,6 +5,8 @@ include ../../mixins/formatDateTime.pug
 block main 
   .product-detail 
     h2 #{product.title}
+    - if(product.featured && product.featured === '1')
+        p Sản phẩm nổi bật
     - if(product.product_category_id)
         p Danh mục: 
           strong #{product.categoryName}

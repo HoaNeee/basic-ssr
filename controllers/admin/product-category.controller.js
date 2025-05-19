@@ -56,6 +56,14 @@ module.exports.create = async (req, res) => {
 
 //[POST] /admin/products-category/create
 module.exports.createPost = async (req, res) => {
+  //permission example
+  // const permissions = res.locals.roles.permissions;
+  // if (permissions.includes("products-category-create")) {
+  //   res.send("bạn có quyền!");
+  // } else {
+  //   res.send("Bạn không có quyền!");
+  // }
+
   if (!req.body.thumbnail) {
     req.body.thumbnail = "";
   }

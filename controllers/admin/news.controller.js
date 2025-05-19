@@ -47,7 +47,7 @@ module.exports.createPost = async (req, res) => {
     const news = new News(req.body);
     await news.save();
     req.flash("successs", "Successfully!");
-    res.redirect(req.get("Referer"));
+    res.redirect(`${system.prefixAdmin}/news`);
   } catch (error) {
     req.flash("error", "An error occurred!");
     res.redirect(`${system.prefixAdmin}/news`);

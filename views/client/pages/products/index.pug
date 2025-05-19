@@ -1,17 +1,8 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
+include ../../mixins/products-grid.pug
 
 block main 
- 
   .container  
     +box-head("Sản phẩm")
-    .inner-content 
-      each item in products
-        .inner-item 
-          .inner-img 
-            img(src=item.thumbnail, alt=item.title)
-          .inner-item-content 
-
-            a(href=`/products/detail/${item.slug}` class="inner-title") #{item.title}
-            p.inner-price-old $ #{item.price}
-            p.inner-price-new $ #{item.priceNew}
+    +products-grid(products)

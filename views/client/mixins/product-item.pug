@@ -1,0 +1,12 @@
+mixin product-item(item)
+  .inner-item 
+    .inner-img 
+      img(src=item.thumbnail, alt=item.title)
+      - if(item.featured)
+          div(class="inner-featured")
+            span nổi bật
+    .inner-item-content 
+      div(class="inner-title")
+        a(href=`/products/detail/${item.slug}` class="") #{item.title}
+      p.inner-price-old $ #{item.price}
+      p.inner-price-new $ #{item.priceNew}

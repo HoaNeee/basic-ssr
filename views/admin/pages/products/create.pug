@@ -26,6 +26,15 @@ block main
             option(value="") -- Chọn danh mục --  
             +select-tree(records)
 
+        .my-2
+          .row 
+            .form-check 
+              input(type="radio" name="featured" id="featuredY" value="1" checked)
+              label(for="featuredY" class="form-check-label") Nổi bật
+            .form-check 
+              input(type="radio" name="featured" id="featuredN" value="0" )
+              label(for="featuredN" class="form-check-label") Không
+
         .form-group
           label(for="desc") Mô tả
           textarea(
@@ -80,8 +89,6 @@ block main
             img(src="", alt="" image-preview)
             div(class="remove-image")
               span X 
-          
-
         .form-group
           label(for="pos") Vị trí
           input(

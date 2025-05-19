@@ -4,6 +4,7 @@ include ../../mixins/alert.pug
 
 block main 
   +alert-error(3000)
+  +alert-success(3000)
   - if(roles.permissions.includes(`news-create`))
       h2 Tạo mới bài viết
       form(

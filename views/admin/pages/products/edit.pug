@@ -29,6 +29,22 @@ block main
           select(name="product_category_id" class="form-control")
             option(value="") -- Chọn danh mục --  
             +select-tree(records, 1, product.product_category_id)
+        
+        .my-2 
+          .row
+            .form-check 
+              input(
+                type="radio" 
+                name="featured" 
+                id="featuredY" 
+                value="1" 
+                checked=(product.featured === '1' ? true : false)
+              )
+              label(for="featuredY" class="form-check-label") Nổi bật
+            .form-check 
+              input(type="radio" name="featured" id="featuredN" value="0" checked=(product.featured === '0' ? true : false))
+              label(for="featuredN" class="form-check-label") Không
+
         .form-group
           label(for="desc") Mô tả
           textarea(
