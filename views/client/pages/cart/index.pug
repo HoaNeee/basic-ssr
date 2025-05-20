@@ -1,0 +1,51 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  div(class="my-3")
+    +box-head("Giỏ hàng")  
+    table(class="my-table")
+      thead 
+        th STT
+        th Ảnh
+        th Tên
+        th Giá
+        th Số lượng
+        th Tổng tiền 
+        th Hành động
+      tbody 
+        each item,index in cart.products 
+          tr 
+            td #{index + 1}
+            td
+              img(src=item.product.thumbnail, alt="")
+            td
+              a(href=`/products/detail/${item.product.slug}` class="inner-title")  #{item.product.title}
+            td #{item.product.priceNew}$
+            td 
+              input(type="number" min=1 input-change-quantity data-id=item.product_id value= item.quantity)
+            td #{item.totalPrice}$
+            td 
+              button(class="btn btn-danger" btn-delete-productCart data-id=item.product_id) Xóa
+    div(class="my-3", style="text-align: right;") 
+      h2 Tổng đơn hàng: #{totalPriceCart}$
+      button(class="btn btn-success") Thanh toán
+  
+  form(
+    action=``
+    data-path=`/cart/update/`
+    form-change-quantity
+    class="d-none"
+    method="POST"
+    ) 
+    input(type="text" name="quantity")
+
+  form(
+    action=``
+    data-path=`/cart/delete/`
+    form-delete-productCart
+    class="d-none"
+    method="POST"
+    )
+  
+  script(src="/js/cart.js")

@@ -208,10 +208,71 @@ footer {
   border-radius: 10px;
 }
 
+.product-detail .inner-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .product-detail .inner-stock {
   padding: 5px;
   background-color: green;
   color: white;
   border-radius: 10px;
   margin: 0 5px;
+}
+
+/* alert */
+.alert-custom {
+  position: fixed;
+  right: 20px;
+  top: 70px;
+  z-index: 9999;
+}
+
+.alert-hidden {
+  animation-name: hidden;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+@keyframes hidden {
+  form {
+    right: 15px;
+  }
+  to {
+    right: -100%;
+    display: none;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* my table */
+.my-table {
+  width: 100%;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.my-table img {
+  width: 100px;
+}
+
+.my-table .inner-title {
+  display: block;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.my-table input {
+  width: 100px;
+}
+.my-table td,
+tr,
+th {
+  padding: 10px 0;
+  border: 2px solid #ddd;
 }

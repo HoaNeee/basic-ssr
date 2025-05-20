@@ -5,6 +5,10 @@ header(class="header")
     .inner-header
       a(href="/" class="inner-logo")
         img(src="/images/logo-2.jpg", alt="this is image")
+      form(action=`/search`)
+        div(class="" style="display: flex; gap: 2px")
+          input(type="text" class="form-control" name="keyword" placeholder="Nhập từ khóa..." value=query)
+          button(class="btn btn-primary" type="submit") Tìm 
       ul(class="inner-nav") 
         li 
           a(href="/") Trang chủ 
@@ -13,5 +17,7 @@ header(class="header")
           +sub-menu(layoutCategory, 'products')
         li 
           a(href="/news") Bài viết 
+        li 
+          a(href="/cart") Giỏ hàng(#{totalQuantity ? totalQuantity : 0})
           
                    

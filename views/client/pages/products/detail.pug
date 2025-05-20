@@ -1,7 +1,7 @@
 extends ../../layouts/default.pug
 
 
-block main 
+block main
   .product-detail 
     .row 
       .col-6
@@ -18,11 +18,11 @@ block main
           p Còn lại: 
             strong(class="inner-stock") #{product.stock}
             span sản phẩm
-        form(action="")
+        form(action=`/cart/add/${product._id}` method="POST")
           .form-group 
-            input(type="number" class="form-control" min="1" max=product.stock value=1)
+            input(type="number" class="form-control" min="1" max=product.stock value=1 name="quantity")
           button(class="btn btn-success") Thêm vào giỏ hàng  
     div(class="inner-desc-title") Mô tả sản phẩm 
-    div !{product.description}
+    div(class="inner-desc") !{product.description}
 
       
