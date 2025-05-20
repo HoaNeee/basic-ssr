@@ -30,12 +30,18 @@ module.exports.cartId = async (req, res, next) => {
     const cart = await Cart.findOne({
       _id: cartId,
     });
-    let totalQuantity = 0;
-    for (let item of cart.products) {
-      totalQuantity += item.quantity;
+    if (!cart) {
+      res.clearCookie("cartId");
+      res.redirect("/");
+      return;
+    } else {
+      let totalQuantity = 0;
+      for (let item of cart.products) {
+        totalQuantity += item.quantity;
+      }
+      res.locals.cartId = cartId;
+      res.locals.totalQuantity = totalQuantity;
     }
-    res.locals.cartId = cartId;
-    res.locals.totalQuantity = totalQuantity;
   }
   next();
 };
