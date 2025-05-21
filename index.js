@@ -39,8 +39,8 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 //route
-route(app);
 routeAdmin(app);
+route(app);
 
 //variable locals
 const system = require("./config/system");
