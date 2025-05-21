@@ -1,6 +1,8 @@
 const Cart = require("../../models/cart.model");
+const User = require("../../models/user.model");
 
 module.exports.cartId = async (req, res, next) => {
+  //dong nay luon chay vao
   if (!req.cookies.cartId) {
     //get ip
     const response = await fetch("https://api.ipify.org?format=json");
@@ -16,6 +18,7 @@ module.exports.cartId = async (req, res, next) => {
         user_ip_address: ipAddress,
       });
       await cart.save();
+
       //set cookie
       const maxAge = 1000 * 60 * 60 * 24 * 10;
       res.cookie("cartId", String(cart._id), {

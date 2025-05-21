@@ -1,0 +1,18 @@
+extends ../../layouts/default.pug
+
+block main 
+  div(class="info")
+    .inner-img
+      img(src=(user.avatar || "/images/avatarNotFound.jpg"), alt="")
+    .inner-content-info
+      p Họ tên: 
+        b #{user.fullname}
+      p Số điện thoại: 
+        b #{user.phone || "Chưa cập nhật"}
+      p Địa chỉ: 
+        b #{user.address || "Chưa cập nhật"}
+      p Đơn hàng đã đặt: 
+        b 5
+      div 
+        a(href="" class="btn btn-warning") Chỉnh sửa thông tin  
+    

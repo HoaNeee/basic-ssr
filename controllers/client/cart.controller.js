@@ -6,7 +6,10 @@ const productHelper = require("../../helpers/product");
 module.exports.index = async (req, res) => {
   const cartId = req.cookies.cartId;
   const cart = await Cart.findOne({ _id: cartId });
-
+  if (!cart) {
+    res.redirect("/");
+    return;
+  }
   if (cart.products.length > 0) {
     for (let item of cart.products) {
       const product = await Product.findOne({
@@ -75,7 +78,7 @@ module.exports.add = async (req, res) => {
     req.flash("success", "Thêm vào giỏ hàng thành công!");
     res.redirect(req.get("Referer"));
   } catch (error) {
-    req.flash("error", "An error occurred!");
+    req.flash("error", "An error occurred!" + error);
     res.redirect(req.get("Referer"));
   }
 };
@@ -96,7 +99,7 @@ module.exports.updateCart = async (req, res) => {
     req.flash("success", "Cập nhật số lượng thành công!");
     res.redirect(req.get("Referer"));
   } catch (error) {
-    req.flash("error", "An error occurred!");
+    req.flash("error", "An error occurred!" + error);
     res.redirect(req.get("Referer"));
   }
 };
@@ -121,7 +124,7 @@ module.exports.deleteCart = async (req, res) => {
     req.flash("success", "Đã xóa sản phẩm khỏi giỏ hàng!");
     res.redirect(req.get("Referer"));
   } catch (error) {
-    req.flash("error", "An error occurred!");
+    req.flash("error", "An error occurred!" + error);
     res.redirect(req.get("Referer"));
   }
 };

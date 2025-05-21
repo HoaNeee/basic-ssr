@@ -1,0 +1,46 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+
+block main 
+  +box-head("Đặt hàng thành công")
+  div(class="alert alert-success")
+    p Chúc mừng bạn đã đặt hàng thành công. Chúng tôi sẽ xử lý đơn hàng trong thời gian sớm nhất.  
+  h4 Thông tin cá nhân
+  table(class="table table-bordered") 
+    tbody 
+      tr 
+        td Họ tên 
+        td 
+          b Nguyễn văn a
+      tr 
+        td Số điện thoại 
+        td
+          b 03030303
+      tr 
+        td Địa chỉ 
+        td
+          b 123 abc
+  h4 Thông tin đơn hàng 
+  table(class="table table-bordered")
+    thead 
+      th STT
+      th Hình ảnh
+      th Tên sản phẩm
+      th Giá
+      th Số lượng
+      th Tổng tiền
+    tbody
+      each item,index in order.products
+        tr 
+          td #{index + 1} 
+          td 
+            img(src=item.thumbnail, alt="" style="width: 200px;") 
+          td #{item.title}
+          td #{item.priceNew}$
+          td #{item.quantity}
+          td #{item.totalPrice}$ 
+          
+  div(class="my-3", style="text-align: right;") 
+      h2 Tổng đơn hàng: #{totalPrice}$
+      

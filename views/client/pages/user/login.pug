@@ -1,0 +1,16 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  div(style="width: 500px;margin: 20px auto;")
+    +box-head("Đăng nhập")
+    form(action="/user/login" method="POST")
+      .form-group 
+        label(for="email") Email
+        input(type="email", id="email" name="email" class="form-control")  
+      .form-group 
+        label(for="password") Mật khẩu
+        input(type="password", id="password" name="password" class="form-control")
+
+      button(class="btn btn-primary btn-block") Đăng nhập
+      a(href="/user/password/forgot" class="mt-3 d-inline-block") Quên mật khẩu   

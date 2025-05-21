@@ -86,14 +86,17 @@ header .inner-logo img {
 
 /* main */
 
-.inner-content {
+.main {
+  min-height: 83vh;
+}
+.main .inner-content {
   margin: 30px 0;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.inner-content .inner-item {
+.main .inner-content .inner-item {
   border: 1px solid #ddd;
   display: inline-block;
   width: 250px;
@@ -103,38 +106,38 @@ header .inner-logo img {
   overflow: hidden;
 }
 
-.inner-content .inner-item .inner-img {
+.main .inner-content .inner-item .inner-img {
   width: 100%;
   height: auto;
   aspect-ratio: 4/3;
   position: relative;
 }
-.inner-content .inner-item .inner-title {
+.main .inner-content .inner-item .inner-title {
   font-size: 18px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.inner-content .inner-item .inner-price-old {
+.main .inner-content .inner-item .inner-price-old {
   text-decoration: line-through;
 }
-.inner-content .inner-item .inner-price-new {
+.main .inner-content .inner-item .inner-price-new {
   color: red;
 }
 
-.inner-content .inner-item .inner-img img {
+.main .inner-content .inner-item .inner-img img {
   width: 100%;
   height: 100%;
 }
 
-.inner-content .inner-item .inner-item-content {
+.main .inner-content .inner-item .inner-item-content {
   margin-top: 10px;
 }
 
 /* featured */
 
-.inner-content .inner-featured {
+.main .inner-content .inner-featured {
   position: absolute;
   top: 0;
   right: 0;
@@ -146,18 +149,6 @@ header .inner-logo img {
 }
 
 /* end main */
-
-footer {
-  background-color: #1d1616;
-  color: white;
-  text-align: center;
-  padding: 10px;
-}
-
-.box-head {
-  margin: 15px 0;
-  color: purple;
-}
 
 /* product detail */
 .product-detail {
@@ -275,4 +266,43 @@ tr,
 th {
   padding: 10px 0;
   border: 2px solid #ddd;
+}
+
+/* footer */
+footer {
+  background-color: #1d1616;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+}
+
+.box-head {
+  margin: 15px 0;
+  color: purple;
+}
+
+/* info user */
+.info {
+  padding: 10px 0;
+}
+
+.info .inner-img {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+.info .inner-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info .inner-content-info {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }

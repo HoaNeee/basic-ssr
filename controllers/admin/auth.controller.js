@@ -53,7 +53,7 @@ module.exports.loginPost = async (req, res) => {
     return;
   }
 
-  const token = generate(25);
+  const token = generate.string(25);
   await Account.updateOne({ email: email }, { token: token });
 
   res.cookie("token", token);
