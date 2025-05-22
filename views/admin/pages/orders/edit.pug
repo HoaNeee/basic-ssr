@@ -1,0 +1,82 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success(2500)
+  +alert-error(3500)
+  - if(roles.permissions.includes("orders-edit"))
+      div(class="my-3")
+        h2 Trang đơn hàng
+        form(action=`${prefixAdmin}/orders/edit/info/${order._id}?_method=PATCH` method="POST" style="border: 1px solid #ddd; padding: 20px; border-radius: 5px;")
+          .form-group 
+            label(for="fullname") Họ tên
+            input(type="text" id="fullname" name="fullname" class="form-control" value= order.user_info.fullname required)  
+          .form-group 
+            label(for="phone") Số điện thoại
+            input(type="text" id="phone" name="phone" class="form-control" value= order.user_info.phone required)  
+          .form-group 
+            label(for="address") Địa chỉ
+            input(type="text" id="address" name="address" class="form-control" value= order.user_info.address required)
+          .form-group
+            label(for="") Trạng thái  
+            select(name="status" class="form-control" style="width: 200px;")
+              option(value="initial" selected=(order.status === 'initial')) Đang chờ duyệt 
+              option(value="cancel" selected=(order.status === 'cancel')) Hủy 
+              option(value="approved" selected=(order.status === 'approved')) Đã duyệt 
+              option(value="delivering" selected=(order.status === 'delivering')) Đang vận chuyển 
+              option(value="completed" selected=(order.status === 'completed')) Đã hoàn thành
+          button(class="btn btn-primary") Chỉnh sửa thông tin
+
+        h3(class="my-4") Thông tin đơn hàng
+
+        table(class="table table-bordered")
+          thead 
+            th STT
+            th Ảnh
+            th Tên
+            th Giá
+            th Số lượng
+            th Tổng tiền 
+            th Hành động
+          tbody 
+            each item,index in order.products
+              tr 
+                td #{index + 1}
+                td
+                  img(src=item.thumbnail, alt="" style="width: 200px;")
+                td
+                  a(href=`${prefixAdmin}/products/detail/${item.product_id}` style="max-width: 200px; display: inline-block;")  #{item.title}
+                td #{item.priceNew}$
+                td 
+                  input(type="number" min=1 input-change-quantity data-id=item.product_id value= item.quantity style="width: 100px;")
+                td #{item.totalPrice}$
+                td 
+                  button(class="btn btn-danger" btn-delete-productCart data-id=item.product_id) Xóa
+
+        div(class="my-3", style="text-align: right;") 
+          h2 Tổng đơn hàng: #{totalPrice}$
+        
+
+        form(
+        action=``
+        data-path=`${prefixAdmin}/orders/edit/${order._id}/products/`
+        form-delete-productCart
+        class="d-none"
+        method="POST"
+        )
+
+
+        form(
+        action=``
+        data-path=`${prefixAdmin}/orders/edit/${order._id}/products/`
+        form-change-quantity
+        class="d-none"
+        method="POST"
+        ) 
+          input(type="text" name="quantity")
+  - else 
+    h3 Bạn không có quyền
+  script(src="/admin/js/order.js")
+    
+    
+  

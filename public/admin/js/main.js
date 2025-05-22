@@ -17,6 +17,23 @@ for (let i = 0; i < buttonStatus.length; i++) {
   });
 }
 
+//change selecte filter status
+const selectStatus = document.querySelector("select[name=filter-status]");
+
+if (selectStatus) {
+  const url = new URL(window.location);
+  selectStatus.addEventListener("change", (e) => {
+    const status = e.target.value;
+    if (status) {
+      url.searchParams.set("status", status);
+    } else {
+      url.searchParams.delete("status");
+    }
+
+    window.location.href = url;
+  });
+}
+
 //search
 const formSearch = document.querySelector("#form-search");
 
@@ -207,12 +224,14 @@ if (sortElement) {
     option.selected = true;
   }
   sortSelect.addEventListener("change", () => {
-    const stringSort = sortSelect.value;
-    const [sortKey, sortValue] = stringSort.split("-");
-    url.searchParams.set("sortKey", sortKey);
-    url.searchParams.set("sortValue", sortValue);
+    if (sortSelect.value) {
+      const stringSort = sortSelect.value;
+      const [sortKey, sortValue] = stringSort.split("-");
+      url.searchParams.set("sortKey", sortKey);
+      url.searchParams.set("sortValue", sortValue);
 
-    window.location.href = url.href;
+      window.location.href = url.href;
+    }
   });
 
   btnClear.addEventListener("click", () => {
@@ -222,4 +241,22 @@ if (sortElement) {
       window.location.href = url.href;
     }
   });
+}
+
+//change status select
+const selectsChangeStatus = document.querySelectorAll("[change-status-select]");
+if (selectsChangeStatus && selectsChangeStatus.length > 0) {
+  const formChangeStatus = document.querySelector("#form-change-status");
+  const input = formChangeStatus.querySelector("input");
+  for (let select of selectsChangeStatus) {
+    select.addEventListener("change", (e) => {
+      const status = e.target.value;
+      const id = select.getAttribute("data-id");
+      input.value = `${id}-${status}`;
+      const path = formChangeStatus.getAttribute("data-path");
+      const action = `${path}?_method=PATCH`;
+      formChangeStatus.action = action;
+      formChangeStatus.submit();
+    });
+  }
 }

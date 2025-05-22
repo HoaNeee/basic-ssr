@@ -18,7 +18,7 @@ module.exports.registerPost = async (req, res) => {
   const email = req.body.email;
   const fullname = req.body.fullname;
   const password = req.body.password;
-  const existEmail = await User.findOne({ email: email });
+  const existEmail = await User.findOne({ email: email, deleted: false });
   if (existEmail) {
     req.flash("error", "Email đã tồn tại trong hệ thống!");
     res.redirect(req.get("Referer"));
@@ -30,6 +30,7 @@ module.exports.registerPost = async (req, res) => {
     fullname: fullname,
     password: md5(password),
     token: token,
+    status: "active",
   });
 
   res.cookie("tokenUser", token);
@@ -59,6 +60,12 @@ module.exports.loginPost = async (req, res) => {
     return;
   }
 
+  if (user.status === "locked") {
+    req.flash("error", "Tài khoản đã bị khóa");
+    res.redirect(req.get("Referer"));
+    return;
+  }
+
   if (user.password !== md5(password)) {
     req.flash("error", "Sai mật khẩu");
     res.redirect(req.get("Referer"));
@@ -71,6 +78,9 @@ module.exports.loginPost = async (req, res) => {
 
   const cartUser = await Cart.findOne({ user_id: user._id });
   if (cartUser) {
+    // const maxAge = 1000 * 60 * 60 * 24 * 10; -> khong the dung
+    //khi tokenUser het thi cartId die
+
     res.cookie("cartId", String(cartUser._id));
   } else {
     if (res.locals.cartId) {
@@ -188,4 +198,38 @@ module.exports.info = async (req, res) => {
   res.render("client/pages/user/info.pug", {
     titlePage: "Thông tin",
   });
+};
+
+//[GET] /user/edit
+module.exports.edit = async (req, res) => {
+  res.render("client/pages/user/edit.pug", {
+    titlePage: "Chỉnh sửa thông tin",
+  });
+};
+
+//[PATCH] /user/edit
+module.exports.editPatch = async (req, res) => {
+  try {
+    const user = res.locals.user;
+    const id = user._id;
+    const email = req.body.email;
+    const existEmail = await User.findOne({
+      _id: { $ne: id },
+      email: email,
+      deleted: false,
+    });
+    if (existEmail) {
+      req.flash("error", "Email đã tồn tại");
+      res.redirect(req.get("Referer"));
+      return;
+    }
+
+    await User.updateOne({ _id: id }, req.body);
+
+    req.flash("success", "Cập nhật thành công");
+    res.redirect(req.get("Referer"));
+  } catch (error) {
+    req.flash("error", "Đã có lỗi xả ra" + error);
+    res.redirect("/user/info");
+  }
 };

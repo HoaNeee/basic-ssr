@@ -21,7 +21,7 @@ block main
                   img(src=item.product.thumbnail, alt="")
                 td
                   p(class="inner-title")  #{item.product.title}
-                td #{item.product.price}$
+                td #{item.product.priceNew}$
                 td 
                   p #{item.quantity}
                 td #{item.totalPrice}$
@@ -33,13 +33,13 @@ block main
         form(action='/checkout/order' method="POST" style="border: 1px solid #ddd; padding: 20px; border-radius: 5px;")
           .form-group 
             label(for="fullname") Họ tên
-            input(type="text" id="fullname" name="fullname" class="form-control" required)  
+            input(type="text" id="fullname" name="fullname" class="form-control" value=(user ? user.fullname : "") required)  
           .form-group 
             label(for="phone") Số điện thoại
-            input(type="text" id="phone" name="phone" class="form-control" required)  
+            input(type="text" id="phone" name="phone" class="form-control" value=(user ? user.phone : "") required)  
           .form-group 
             label(for="address") Địa chỉ
-            input(type="text" id="address" name="address" class="form-control" required)
+            input(type="text" id="address" name="address" class="form-control" value=(user ? user.address : "") required)
           button(class="btn btn-success btn-block") Đặt hàng
     - else 
         h4 Hãy thêm ít nhất 1 

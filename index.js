@@ -29,8 +29,8 @@ app.use(
   express.static(path.join(__dirname, "node_modules", "tinymce"))
 );
 
-const route = require("./routes/client/index.route");
 const routeAdmin = require("./routes/admin/index.route");
+const route = require("./routes/client/index.route");
 
 app.use(express.static(`${__dirname}/public`));
 
@@ -41,6 +41,12 @@ app.set("view engine", "pug");
 //route
 routeAdmin(app);
 route(app);
+
+app.use((req, res, next) => {
+  res.render("client/pages/error/404.pug", {
+    titlePage: "404 Not Found",
+  });
+});
 
 //variable locals
 const system = require("./config/system");

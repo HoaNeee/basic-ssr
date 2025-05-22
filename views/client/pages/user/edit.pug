@@ -1,0 +1,74 @@
+extends ../../layouts/default.pug
+
+block main 
+  h2 Chỉnh sửa thông tin
+  form(
+    action=`/user/edit?_method=PATCH`
+    method="POST"
+    enctype="multipart/form-data"
+    class="my-4"
+  )
+    .form-group
+      label(for="avatar") Avatar
+      input(
+        type="file"
+        min="0"
+        class="form-control-file" 
+        name="avatar" 
+        id="avatar"
+        accept="image/*"
+        input-preview-image
+      )
+
+      div(class="img-container")
+        img(src=user.avatar, alt="" image-preview)
+        div(class="remove-image")
+          span X
+
+    .form-group
+      label(for="fullname") Họ tên*
+      input(
+        type="text" 
+        class="form-control" 
+        name="fullname"
+        id="fullname" 
+        required
+        value= user.fullname
+      ) 
+    .form-group
+      label(for="email") Email*
+      input(
+        type="email" 
+        class="form-control" 
+        name="email"
+        id="email" 
+        value=user.email
+        required
+      ) 
+    .form-group
+      label(for="phone") Số điện thoại
+      input(
+        type="text" 
+        class="form-control" 
+        name="phone" 
+        id="phone"
+        value=user.phone
+        placeholder="Chưa cập nhật"
+      )
+    .form-group
+      label(for="address") Địa chỉ
+      input(
+        type="text" 
+        class="form-control" 
+        name="address" 
+        id="address"
+        value=user.address
+        placeholder="Chưa cập nhật"
+      )
+
+    
+
+    button(class="btn btn-primary" type="submit") Chỉnh sửa  
+    
+    //- DO THEN
+    a(class="btn btn-danger ml-3") Đổi mật khẩu 

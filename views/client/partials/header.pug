@@ -4,7 +4,7 @@ header(class="header")
   .container 
     .inner-header
       a(href="/" class="inner-logo")
-        img(src="/images/logo-2.jpg", alt="this is image")
+        img(src=(settingGeneral ? settingGeneral.logo ? settingGeneral.logo : "/images/logo-2.jpg" : "/images/logo-2.jpg"), alt="this is image")
       form(action=`/search`)
         div(class="" style="display: flex; gap: 2px")
           input(type="text" class="form-control" name="keyword" placeholder="Nhập từ khóa..." value=query)

@@ -1,6 +1,6 @@
 .sider 
   .inner-content
-    a(href=`${prefixAdmin}/dashboard`) Trang chủ 
+    a(href=`${prefixAdmin}/dashboard`) Trang tổng quan
     - if(roles.permissions.includes('products-category-read'))
         a(href=`${prefixAdmin}/products-category`) Danh mục sản phẩm
     - if(roles.permissions.includes('products-read'))
@@ -13,4 +13,10 @@
         a(href=`${prefixAdmin}/roles/permission`) Phân quyền
     - if(roles.permissions.includes('accounts-read'))
         a(href=`${prefixAdmin}/accounts`) Tài khoản
-    a(href=`${prefixAdmin}/trash`) Thùng rác 
+    - if(roles.permissions.includes('users-read'))
+        a(href=`${prefixAdmin}/users`) Người dùng
+    - if(roles.permissions.includes('orders-read'))
+        a(href=`${prefixAdmin}/orders`) Đơn hàng
+    a(href=`${prefixAdmin}/trash`) Thùng rác
+    - if(roles.permissions.includes('setting-read'))
+        a(href=`${prefixAdmin}/setting/general`) Cài đặt 

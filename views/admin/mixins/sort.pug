@@ -2,6 +2,7 @@ mixin formSort(type)
   div(sort) 
     .d-inline-flex.align-items-center
       select(class="form-control" name="type" sort-select)
+        option(value="") --- Lựa chọn ---
         - if(type === 'account')
             option(value="permission-asc") Quyền cao - thấp
             option(value="permission-desc") Quyền thấp - cao
@@ -10,9 +11,12 @@ mixin formSort(type)
         - if(type === 'category' || type === 'products' || type === 'news')
             option(value="position-desc") Vị trí giảm dần
             option(value="position-asc") Vị trí tăng dần
-        - if(type === 'product')
+        - if(type === 'product' || type === 'order')
             option(value="price-desc") Giá giảm dần
             option(value="price-asc") Giá tăng dần
+        - if(type === 'user')
+            option(value="locked-desc") Tài khoản khóa sớm nhất
+            option(value="locked-asc") Tài khoản khóa muộn nhất
         option(value="title-asc") Tiêu đề A - Z
         option(value="title-desc") Tiêu đề Z - A
       button(class="btn btn-danger btn-apdung" sort-clear) Clear

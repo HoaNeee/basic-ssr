@@ -35,11 +35,6 @@ module.exports.index = async (req, res) => {
 
 //[POST] /checkout/order
 module.exports.checkoutPost = async (req, res) => {
-  res.redirect("/checkout/order");
-};
-
-//[GET] /checkout/order
-module.exports.checkout = async (req, res) => {
   try {
     const cartId = req.cookies.cartId;
 
@@ -64,36 +59,50 @@ module.exports.checkout = async (req, res) => {
         });
       }
     }
-    cart.products = [];
-    await cart.save();
 
-    const order = new Order({
+    const user = res.locals.user;
+    const orderObject = {
       cart_id: cartId,
       user_info: req.body,
       products: products,
-    });
+      status: "initial",
+    };
+
+    if (user) {
+      orderObject.user_id = user._id;
+    }
+    const order = new Order(orderObject);
 
     await order.save();
 
-    let totalPrice = 0;
-    for (let item of order.products) {
-      const product = await Product.findOne({ _id: item.product_id }).select(
-        "title thumbnail"
-      );
-      item.priceNew = productHelper.priceNew(item);
-      item.totalPrice = item.priceNew * item.quantity;
-      totalPrice += item.totalPrice;
-      item.thumbnail = product.thumbnail;
-      item.title = product.title;
-    }
+    cart.products = [];
+    await cart.save();
 
-    res.render("client/pages/checkout/checkout-success.pug", {
-      titlePage: "Đặt hành thành công",
-      order: order,
-      totalPrice: totalPrice,
-    });
+    res.redirect(`/checkout/order/${order._id}`);
   } catch (error) {
     req.flash("error", `An error occurred! ${error}`);
     res.redirect(req.get("Referer"));
   }
+};
+
+//[GET] /checkout/order/:orderId
+module.exports.checkout = async (req, res) => {
+  const orderId = req.params.orderId;
+  const order = await Order.findOne({ _id: orderId });
+  let totalPrice = 0;
+  for (let item of order.products) {
+    const product = await Product.findOne({ _id: item.product_id }).select(
+      "title thumbnail"
+    );
+    item.priceNew = productHelper.priceNew(item);
+    item.totalPrice = item.priceNew * item.quantity;
+    totalPrice += item.totalPrice;
+    item.thumbnail = product.thumbnail;
+    item.title = product.title;
+  }
+  res.render("client/pages/checkout/checkout-success.pug", {
+    titlePage: "Đặt hành thành công",
+    order: order,
+    totalPrice: totalPrice,
+  });
 };

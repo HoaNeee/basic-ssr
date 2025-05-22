@@ -1,0 +1,112 @@
+extends ../../layouts/default.pug
+include ../../mixins/formChangeMulti.pug
+include ../../mixins/search.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/alert.pug
+
+
+
+block main 
+  +alert-success(2500)
+  +alert-error(3500)
+  - const optionsChange = [{title: "Chờ duyệt", value: "initial"}, {title: "Duyệt", value: "approved"}, {title: "Vận chuyển", value: "delivering"},{title: "Hoàn thành", value: "completed"},{title:"Đã hủy", value: "cancel"},{title: "Xóa tất cả", value: "delete-all"}]
+  
+  - if(roles.permissions.includes(`orders-read`))
+      h2 Trang đơn hàng
+      .card 
+        .card-header 
+          p Bộ lọc và tìm kiếm 
+        .card-body 
+          .row 
+            .col-4 
+              p(class="mb-2") Trạng thái 
+              select(name="filter-status" class="form-control" style="width:200px;")
+                each item in filterStatus 
+                  option(value=item.status selected= item.selected) #{item.title}  
+            .col-4
+              p(class="mb-2") Sắp xếp
+              div(sort) 
+                .d-inline-flex.align-items-center
+                  select(class="form-control" name="type" sort-select)
+                    option(value="" selected disabled) --- Lựa chọn ---
+                    option(value="totalPrice-desc") Giá giảm dần
+                    option(value="totalPrice-asc") Giá tăng dần
+                    option(value="fullname-asc") Họ tên A - Z
+                    option(value="fullname-desc") Họ tên Z - A
+                  button(class="btn btn-danger btn-apdung" sort-clear) Clear
+            .col-4  
+              p(class="mb-2") Tìm kiếm
+              +formSearch(query)
+      +formChangeMulti(`${prefixAdmin}/orders/change-multi?_method=PATCH`, 'orders', optionsChange, 'orders')
+      
+      table(
+        class="table table-hover mt-4"
+      ) 
+        thead 
+          tr  
+            th 
+              input(type="checkbox" name="checkAll")
+            th STT
+            th Tên khách hàng
+            th Địa chỉ nhận
+            th Giá trị
+            th Trạng thái đơn
+            th Hành động 
+          
+        tbody 
+          each item,index in records 
+            tr 
+              td 
+                input(type="checkbox" value=item._id name="id-change")
+              td #{index + 1}
+              td #{item.user_info.fullname}
+              td #{item.user_info.address}
+              td #{item.totalPrice}$
+              td
+                - if(roles.permissions.includes(`orders-edit`))
+                    select(name="status" change-status-select data-id= item._id class="form-control" style="width: 200px;")
+                      option(value="initial" selected=(item.status === 'initial')) Đang chờ duyệt 
+                      option(value="cancel" selected=(item.status === 'cancel')) Hủy 
+                      option(value="approved" selected=(item.status === 'approved')) Đã duyệt 
+                      option(value="delivering" selected=(item.status === 'delivering')) Đang vận chuyển 
+                      option(value="completed" selected=(item.status === 'completed')) Đã hoàn thành
+                - else
+                    - if(item.status === 'initial')
+                        span(class="badge badge-secondary") Đang chờ duyệt
+                    - else if(item.status === 'approved')
+                        span(class="badge badge-primary") Đã duyệt
+                    - else if(item.status === 'delivering')
+                        span(class="badge badge-waring") Đang vận chuyển
+                    - else if(item.status === 'completed')
+                        span(class="badge badge-success") Hoàn thành
+                    - else
+                        span(class="badge badge-danger") Đã hủy
+              
+              td 
+                a(href=`${prefixAdmin}/orders/detail/${item._id}` class="btn btn-secondary btn-sm") Chi tiết
+                - if(roles.permissions.includes(`orders-edit`))
+                    a(class="btn btn-warning btn-sm mx-2" href=`${prefixAdmin}/orders/edit/${item._id}`) Sửa 
+                - if(roles.permissions.includes(`orders-delete`))
+                    button(class="btn btn-danger btn-sm" btn-delete value= item._id) Xóa
+      form(
+          action=""
+          method="POST"
+          id="form-delete-item"
+          data-path=`${prefixAdmin}/orders/delete`
+        ) 
+      
+      form(action=`` class="d-none" method="POST" data-path=`${prefixAdmin}/orders/change-status` id="form-change-status") 
+        input(type="text" name="status")
+
+      form(
+          action=""
+          method="POST"
+          id="form-delete-item"
+          data-path=`${prefixAdmin}/orders/delete`
+        ) 
+
+  - else
+      h2 Bạn không có quyền  
+  script(src="/admin/js/order.js") 
+            
+  

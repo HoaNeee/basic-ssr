@@ -1,0 +1,85 @@
+extends ../../layouts/default.pug
+include ../../mixins/formChangeMulti.pug
+include ../../mixins/alert.pug
+
+block main 
+  +alert-error(2500)
+  +alert-success(2500)
+  - if(roles.permissions.includes("setting-read"))
+      h2 Thiết lập chung
+      form(
+        action=`${prefixAdmin}/setting/general?_method=PATCH`
+        method="POST"
+        enctype="multipart/form-data"
+      )
+        .form-group
+          label(for="webName") Tên website
+          input(
+            type="text" 
+            class="form-control" 
+            name="websiteName"
+            id="webName" 
+            required
+            value=(settingGeneral ? settingGeneral.websiteName : "")
+          )
+
+        .form-group
+          label(for="LOGO") LOGO
+          input(
+            type="file"
+            min="0"
+            class="form-control-file" 
+            name="logo" 
+            id="LOGO"
+            accept="image/*"
+            input-preview-image
+          )
+
+          div(class="img-container")
+            img(src=(settingGeneral ? settingGeneral.logo : ""), alt="" image-preview)
+            div(class="remove-image")
+              span X 
+
+        .form-group
+          label(for="email") Email*
+          input(
+            type="email" 
+            class="form-control" 
+            name="email"
+            id="email" 
+            value=(settingGeneral ? settingGeneral.email : "")
+            required
+          ) 
+
+        .form-group
+          label(for="phone") Số điện thoại
+          input(
+            type="text" 
+            class="form-control" 
+            name="phone" 
+            id="phone"
+            value=(settingGeneral ? settingGeneral.phone : "")
+          )
+
+        .form-group
+          label(for="address") Địa chỉ
+          input(
+            type="text" 
+            class="form-control" 
+            name="address" 
+            id="address"
+            value=(settingGeneral ? settingGeneral.address : "")
+          )
+        .form-group
+          label(for="copyright") Copyright
+          input(
+            type="text" 
+            class="form-control" 
+            name="copyright" 
+            id="copyright"
+            value=(settingGeneral ? settingGeneral.copyright : "")
+          )
+        - if(roles.permissions.includes("setting-edit"))
+            button(class="btn btn-primary" type="submit") Lưu
+  - else  
+      h3 Bạn không có quyền

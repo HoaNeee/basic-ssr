@@ -22,3 +22,33 @@ if (alertElement) {
     alertElement.classList.add("alert-hidden");
   }, time);
 }
+
+//preview image
+const inputImgaePreview = document.querySelector("[input-preview-image]");
+
+if (inputImgaePreview) {
+  const imagePreview = document.querySelector("[image-preview]");
+  const imgContainer = document.querySelector(".img-container");
+
+  if (!imagePreview.getAttribute("src")) {
+    imgContainer.classList.add("hidden");
+    console.log("khong co anhr");
+  } else {
+    console.log("dang co anh");
+  }
+
+  inputImgaePreview.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      imgContainer.classList.remove("hidden");
+      imagePreview.src = URL.createObjectURL(file);
+    }
+  });
+
+  imgContainer.addEventListener("click", () => {
+    imagePreview.src = "";
+    imgContainer.classList.add("hidden");
+    inputImgaePreview.value = "";
+  });
+}

@@ -13,7 +13,7 @@ module.exports.cartId = async (req, res, next) => {
     const existsIp = await Cart.find({
       user_ip_address: ipAddress,
     });
-    if (existsIp.length <= 5) {
+    if (existsIp.length <= 10) {
       const cart = new Cart({
         user_ip_address: ipAddress,
       });
@@ -38,6 +38,15 @@ module.exports.cartId = async (req, res, next) => {
       res.redirect("/");
       return;
     } else {
+      if (cart.user_id) {
+        const userId = cart.user_id;
+        const user = await User.findOne({ _id: userId, deleted: false });
+        if (!user || user.status === "locked") {
+          res.clearCookie("cartId");
+          res.redirect("/");
+          return;
+        }
+      }
       let totalQuantity = 0;
       for (let item of cart.products) {
         totalQuantity += item.quantity;

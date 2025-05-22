@@ -12,15 +12,15 @@ block main
       tr 
         td Họ tên 
         td 
-          b Nguyễn văn a
+          b #{order.user_info.fullname}
       tr 
         td Số điện thoại 
         td
-          b 03030303
+          b #{order.user_info.phone}
       tr 
         td Địa chỉ 
         td
-          b 123 abc
+          b #{order.user_info.address}
   h4 Thông tin đơn hàng 
   table(class="table table-bordered")
     thead 
@@ -37,7 +37,7 @@ block main
           td 
             img(src=item.thumbnail, alt="" style="width: 200px;") 
           td #{item.title}
-          td #{item.priceNew}$
+          td #{item.price}$
           td #{item.quantity}
           td #{item.totalPrice}$ 
           

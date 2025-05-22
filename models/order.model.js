@@ -17,7 +17,7 @@ const orderSchema = new mongoose.Schema(
         quantity: Number,
       },
     ],
-    status: String,
+    status: String, //[initial, approved, delivering, compeleted]
     deleted: {
       type: Boolean,
       default: false,

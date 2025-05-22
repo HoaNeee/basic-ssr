@@ -1,7 +1,68 @@
 extends ../../layouts/default.pug
 
 block main 
-  h1 Trang dashboard
-  div #{user}
-  div #{roles.title}
-  div #{roles.permissions}
+  h2 Trang tổng quan
+  .card.dashboard
+    .card-header 
+      p Thông tin 
+    .card-body 
+      .row 
+        .col-4
+          div(class="inner-info-img") 
+            img(src=user.avatar, alt="")
+        .col-8
+          div(class="inner-info-content")
+            p Họ tên: 
+              b #{user.fullname}
+            p Email: 
+              b #{user.email}
+            p Số điện thoại: 
+              b #{user.phone}
+            p Quyền truy cập:  
+              b #{roles.title}
+  
+  .row.mt-3
+    .col-6 
+      .card 
+        .card-header 
+          b Sản phẩm
+        .card-body 
+          p Tổng sản phẩm: <b>#{analysis.products.total}</b>
+          p Đang hoạt động: <b>#{analysis.products.active}</b>
+          p Dừng hoạt động: <b>#{analysis.products.inactive}</b>
+    .col-6 
+      .card 
+        .card-header 
+          b Danh mục sản phẩm
+        .card-body 
+          p Tổng danh mục: <b>#{analysis.productCategory.total}</b>
+          p Đang hoạt động: <b>#{analysis.productCategory.active}</b>
+          p Dừng hoạt động: <b>#{analysis.productCategory.inactive}</b>
+  .row.mt-3
+    .col-6 
+      .card 
+        .card-header 
+          b Tài khoản
+        .card-body 
+          p Số tài khoản: <b>#{analysis.accounts.total}</b>
+          p Hoạt động: <b>#{analysis.accounts.active}</b>
+          p Dừng hoạt động: <b>#{analysis.accounts.inactive}</b>
+    .col-6 
+      .card 
+        .card-header 
+          b Khách hàng
+        .card-body 
+          p Số khách hàng: <b>#{analysis.users.total}</b>
+          p Hoạt động: <b>#{analysis.users.active}</b>
+          p Dừng hoạt động: <b>#{analysis.users.inactive}</b>
+  .row.mt-3
+    .col-12 
+      .card 
+        .card-header 
+          b Đơn hàng
+        .card-body 
+          p Số lượng đơn hàng: <b>5</b>
+          p Đang chờ duyệt: <b>5</b>
+          p Đã duyệt: <b>5</b>
+          p Đang vận chuyển: <b>5</b>
+          p Đã hoàn thành: <b>5</b>

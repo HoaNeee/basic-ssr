@@ -12,7 +12,7 @@ for (let i = 0; i < btnChangeStatus.length; i++) {
     let status = btnChange.getAttribute("data-status");
     const id = btnChange.getAttribute("data-id");
     if (status === "active") {
-      status = "inactive";
+      status = "locked";
     } else {
       status = "active";
     }

@@ -1,0 +1,45 @@
+extends ../../layouts/default.pug
+
+
+block main
+  - if(roles.permissions.includes("orders-read"))
+      h3 Trang chi tiết đơn hàng  
+      h4(class="mt-5 mb-3") Thông tin khách hàng
+      table(class="table table-bordered") 
+        tbody 
+          tr 
+            td Họ tên 
+            td 
+              b #{order.user_info.fullname}
+          tr 
+            td Số điện thoại 
+            td
+              b #{order.user_info.phone}
+          tr 
+            td Địa chỉ 
+            td
+              b #{order.user_info.address}
+      h4(class="mt-4 mb-3") Thông tin đơn hàng 
+      table(class="table table-bordered")
+        thead 
+          th STT
+          th Hình ảnh
+          th Tên sản phẩm
+          th Giá
+          th Số lượng
+          th Tổng tiền
+        tbody
+          each item,index in order.products
+            tr 
+              td #{index + 1} 
+              td 
+                img(src=item.thumbnail, alt="" style="width: 100px; ") 
+              td #{item.title}
+              td #{item.price}$
+              td #{item.quantity}
+              td #{item.totalPrice}$ 
+              
+      div(class="my-3", style="text-align: right;") 
+          h2 Tổng đơn hàng: #{totalPrice}$
+  - else
+      h3 Bạn không có quyền    

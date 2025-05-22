@@ -27,7 +27,7 @@ block main
           td(class="text-center") 
             input(type="checkbox")
       tr(name="products-category-create") 
-        td Thêm mới
+        td Thêm mới danh mục
         each item in records 
           td(class="text-center") 
             input(type="checkbox")
@@ -51,7 +51,7 @@ block main
           td(class="text-center") 
             input(type="checkbox")
       tr(name="products-create") 
-        td Thêm mới
+        td Thêm mới sản phẩm
         each item in records 
           td(class="text-center") 
             input(type="checkbox")
@@ -75,7 +75,7 @@ block main
           td(class="text-center") 
             input(type="checkbox")
       tr(name="roles-create") 
-        td Thêm mới
+        td Thêm mới nhóm quyền
         each item in records 
           td(class="text-center") 
             input(type="checkbox")
@@ -95,7 +95,7 @@ block main
           td(class="text-center") 
             input(type="checkbox")
 
-      //- accpunt
+      //- account
       tr
         th Tài khoản
       tr(name="accounts-read")
@@ -104,7 +104,7 @@ block main
           td(class="text-center") 
             input(type="checkbox")
       tr(name="accounts-create") 
-        td Thêm mới
+        td Thêm mới tài khoản
         each item in records 
           td(class="text-center") 
             input(type="checkbox")
@@ -127,7 +127,7 @@ block main
           td(class="text-center") 
             input(type="checkbox")
       tr(name="news-create") 
-        td Thêm mới
+        td Thêm mới bài viết
         each item in records 
           td(class="text-center") 
             input(type="checkbox")
@@ -141,7 +141,63 @@ block main
         each item in records 
           td(class="text-center") 
             input(type="checkbox")
- 
+
+      //- user
+      tr
+        th Người dùng
+      tr(name="users-read")
+        td Xem
+        each item in records 
+          td(class="text-center") 
+            input(type="checkbox")
+      tr(name="users-create") 
+        td Thêm mới người dùng
+        each item in records 
+          td(class="text-center") 
+            input(type="checkbox")
+      tr(name="users-edit") 
+        td Chỉnh sửa
+        each item in records 
+          td(class="text-center")
+            input(type="checkbox")
+      tr(name="users-delete") 
+        td Xóa
+        each item in records 
+          td(class="text-center") 
+            input(type="checkbox")
+
+      //- order
+      tr
+        th Đơn hàng
+      tr(name="orders-read")
+        td Xem
+        each item in records 
+          td(class="text-center") 
+            input(type="checkbox")
+      tr(name="orders-edit") 
+        td Chỉnh sửa
+        each item in records 
+          td(class="text-center")
+            input(type="checkbox")
+      tr(name="orders-delete") 
+        td Xóa
+        each item in records 
+          td(class="text-center") 
+            input(type="checkbox")
+      
+      //- setiing
+      tr
+        th Thiết lập
+      tr(name="setting-read")
+        td Xem
+        each item in records 
+          td(class="text-center") 
+            input(type="checkbox")
+      tr(name="setting-edit") 
+        td Chỉnh sửa
+        each item in records 
+          td(class="text-center")
+            input(type="checkbox")
       
 
 
