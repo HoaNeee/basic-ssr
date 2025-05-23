@@ -61,8 +61,9 @@ block main
         .card-header 
           b Đơn hàng
         .card-body 
-          p Số lượng đơn hàng: <b>5</b>
-          p Đang chờ duyệt: <b>5</b>
-          p Đã duyệt: <b>5</b>
-          p Đang vận chuyển: <b>5</b>
-          p Đã hoàn thành: <b>5</b>
+          p Số lượng đơn hàng: <b>#{analysis.orders.total}</b>
+          p Đang chờ duyệt: <b>#{analysis.orders.initial}</b>
+          p Đã duyệt: <b>#{analysis.orders.approved}</b>
+          p Đang vận chuyển: <b>#{analysis.orders.delivering}</b>
+          p Đã hoàn thành: <b>#{analysis.orders.completed}</b>
+          p Đã hủy: <b>#{analysis.orders.cancel}</b>

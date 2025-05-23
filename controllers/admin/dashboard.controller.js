@@ -29,8 +29,11 @@ module.exports.index = async (req, res) => {
     },
     orders: {
       total: 0,
-      active: 0,
-      inactive: 0,
+      initial: 0,
+      approved: 0,
+      delivering: 0,
+      completed: 0,
+      cancel: 0,
     },
   };
 
@@ -92,6 +95,36 @@ module.exports.index = async (req, res) => {
 
   analysis.accounts.active = countAccountActive;
   analysis.accounts.inactive = countAccountInactive;
+
+  const countOrder = await Order.countDocuments({ deleted: false });
+  const countOrderInittial = await Order.countDocuments({
+    status: "initial",
+    deleted: false,
+  });
+  const countOrderApproved = await Order.countDocuments({
+    status: "approved",
+    deleted: false,
+  });
+  const countOrderDelivering = await Order.countDocuments({
+    status: "delivering",
+    deleted: false,
+  });
+  const countOrderCompleted = await Order.countDocuments({
+    status: "completed",
+    deleted: false,
+  });
+  const countOrderCancel = await Order.countDocuments({
+    status: "cancel",
+    deleted: false,
+  });
+
+  analysis.orders.total = countOrder;
+  analysis.orders.initial = countOrderInittial;
+  analysis.orders.approved = countOrderApproved;
+  analysis.orders.delivering = countOrderDelivering;
+  analysis.orders.completed = countOrderCompleted;
+  analysis.orders.cancel = countOrderCancel;
+
   res.render("admin/pages/dashboard/index", {
     titlePage: "Dashboard",
     analysis: analysis,

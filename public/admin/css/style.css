@@ -5,13 +5,31 @@ p {
 /* header */
 header {
   background-color: #4e4d64;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
+header .inner-logo {
+  width: 15%;
+}
+
+header .inner-logo a {
+  font-weight: 700;
+  font-size: 30px;
+  margin-left: 20px;
 }
 header .inner-header-content {
   height: 60px;
   display: flex;
   align-items: center;
   color: #fff;
-  justify-content: space-between;
+}
+
+header .inner-nav {
+  flex: 1;
+  display: flex;
+  justify-content: end;
 }
 
 header .inner-header-content a {
@@ -21,16 +39,22 @@ header .inner-header-content a {
 /* main  */
 
 .main {
+  width: 100%;
   display: flex;
 }
 
 /* sider */
 
+.main .sider-container {
+  width: 15%;
+}
 .main .sider {
   width: 15%;
   min-height: 100vh;
-  background-color: #474747;
+  background-color: #252525;
   color: white;
+  position: fixed;
+  left: 0;
 }
 
 .main .sider .inner-content {
@@ -41,7 +65,7 @@ header .inner-header-content a {
 .main .sider .inner-content a {
   padding: 10px;
   color: white;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid #cccccc;
 }
 .main .sider .inner-content a:hover {
   background: #323232;
@@ -50,8 +74,8 @@ header .inner-header-content a {
 /* content */
 
 .main .inner-content {
+  flex: 1;
   padding: 10px;
-  width: 100%;
 }
 
 .btn-apdung {

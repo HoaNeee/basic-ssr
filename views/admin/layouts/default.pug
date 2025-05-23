@@ -7,8 +7,9 @@ html(lang="en")
   body
     - if(roles && roles.permissions && roles.permissions.length > 0)
         include ../partials/header.pug
-        .main 
-          include ../partials/sider.pug
+        .main
+          .sider-container
+            include ../partials/sider.pug 
           .inner-content 
             block main
             

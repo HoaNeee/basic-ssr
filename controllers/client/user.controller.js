@@ -1,6 +1,7 @@
 const User = require("../../models/user.model");
 const ForgotPassword = require("../../models/forgot-password.model");
 const Cart = require("../../models/cart.model");
+const Order = require("../../models/order.model");
 const md5 = require("md5");
 
 const sendMail = require("../../helpers/sendMail");
@@ -195,9 +196,18 @@ module.exports.resetPasswordPost = async (req, res) => {
 
 //[GET] /user/info
 module.exports.info = async (req, res) => {
-  res.render("client/pages/user/info.pug", {
-    titlePage: "Thông tin",
-  });
+  try {
+    const user = res.locals.user;
+    const orders = await Order.countDocuments({ user_id: user._id });
+
+    res.render("client/pages/user/info.pug", {
+      titlePage: "Thông tin",
+      orders: orders,
+    });
+  } catch (error) {
+    req.flash("error", "Đã có lỗi xả ra" + error);
+    res.redirect("/user/info");
+  }
 };
 
 //[GET] /user/edit
